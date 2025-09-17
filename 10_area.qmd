@@ -1,0 +1,3 @@
+# Study area {.unnumbered}
+
+> **Summary**. French Guiana undisturbed forest using TMF with a 10x10km grid.

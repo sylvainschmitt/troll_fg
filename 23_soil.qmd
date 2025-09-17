@@ -1,0 +1,8 @@
+```{r set}
+#| include: false
+library(tidyverse)
+```
+
+# Soil {.unnumbered}
+
+METRADICA soil maps.

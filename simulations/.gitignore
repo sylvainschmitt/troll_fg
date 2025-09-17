@@ -1,0 +1,9 @@
+*
+!README.md
+!README.qmd
+!.gitignore
+!rcontroll.def
+!job.sh
+!ressources.yaml
+!snakefile
+!scripts/

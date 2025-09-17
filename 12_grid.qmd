@@ -1,0 +1,11 @@
+```{r set}
+#| include: false
+library(tidyverse)
+```
+
+# Grid {.unnumbered}
+
+-   10 x 10 km grid based on computing time
+-   Cell homogeneity
+-   Subarea for a first test?
+-   <https://main--altpages.netlify.app/regional>

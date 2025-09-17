@@ -1,0 +1,114 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "TROLL FG",
+    "section": "",
+    "text": "Introduction\nThe general idea is to test TROLL 4.0’s ability to simulate the regional pattern of carbon balance (first test with gross primary production (GPP)) in French Guiana (Maréchaux et al. 2024; Schmitt et al. 2024). We will evaluate the spatial projections produced against regional patterns of forest structure derived from remote sensing, as well as point-wise forest inventories for forest dynamics and diversity, and single-point fluxes from an eddy tower. Further work could then explore the effect of future climates on the carbon balance."
+  },
+  {
+    "objectID": "index.html#poeple",
+    "href": "index.html#poeple",
+    "title": "TROLL FG",
+    "section": "Poeple",
+    "text": "Poeple\n\nSylvain Schmitt (sylvain.schmitt@cirad.fr)\nJérôme Chave (jerome.chave@univ-tlse3.fr)\nIsabelle Maréchaux (isabelle.marechaux@inrae.fr)\n\n\n\n\n\nMaréchaux, Isabelle, Fabian Jörg Fischer, Sylvain Schmitt, and Jérôme Chave. 2024. “TROLL 4.0: Representing Water and Carbon Fluxes, Leaf Phenology and Intraspecific Trait Variation in a Mixed-Species Individual-Based Forest Dynamics Model  Part 1: Model Description.” http://dx.doi.org/10.5194/egusphere-2024-3104.\n\n\nSchmitt, Sylvain, Fabian Fischer, James Ball, Nicolas Barbier, Marion Boisseaux, Damien Bonal, Benoit Burban, et al. 2024. “TROLL 4.0: Representing Water and Carbon Fluxes, Leaf Phenology, and Intraspecific Trait Variation in a Mixed-Species Individual-Based Forest Dynamics Model  Part 2: Model Evaluation for Two Amazonian Sites.” http://dx.doi.org/10.5194/egusphere-2024-3106."
+  },
+  {
+    "objectID": "10_area.html",
+    "href": "10_area.html",
+    "title": "Study area",
+    "section": "",
+    "text": "Summary. French Guiana undisturbed forest using TMF with a 10x10km grid."
+  },
+  {
+    "objectID": "11_fg.html",
+    "href": "11_fg.html",
+    "title": "French Guiana",
+    "section": "",
+    "text": "French Guiana limits\nTMF undisturbed forests (Bourgoin et al. (2024))\nOther limits?\nGuyafor distribution on it\nGuyaflux position\nSubarea for a first test?\n\n\n\n\n\nBourgoin, C., G. Ceccherini, M. Girardello, C. Vancutsem, V. Avitabile, P. S. A. Beck, R. Beuchle, et al. 2024. “Human Degradation of Tropical Moist Forests Is Greater Than Previously Estimated.” Nature 631 (8021): 570–76. https://doi.org/10.1038/s41586-024-07629-0."
+  },
+  {
+    "objectID": "12_grid.html",
+    "href": "12_grid.html",
+    "title": "Grid",
+    "section": "",
+    "text": "10 x 10 km grid based on computing time\nCell homogeneity\nSubarea for a first test?\nhttps://main--altpages.netlify.app/regional"
+  },
+  {
+    "objectID": "20_input_data.html",
+    "href": "20_input_data.html",
+    "title": "Input data",
+    "section": "",
+    "text": "Summary. for a first test using Schmitt et al. (2024) species and global parameters, Muñoz-Sabater et al. (2021) ERA5-Land reanalysis, and METRADICA soil maps.\n\n\n\n\n\nMuñoz-Sabater, Joaquín, Emanuel Dutra, Anna Agustí-Panareda, Clément Albergel, Gabriele Arduini, Gianpaolo Balsamo, Souhail Boussetta, et al. 2021. “ERA5-Land: A State-of-the-Art Global Reanalysis Dataset for Land Applications.” Earth System Science Data 13 (9): 4349–83. https://doi.org/10.5194/essd-13-4349-2021.\n\n\nSchmitt, Sylvain, Fabian Fischer, James Ball, Nicolas Barbier, Marion Boisseaux, Damien Bonal, Benoit Burban, et al. 2024. “TROLL 4.0: Representing Water and Carbon Fluxes, Leaf Phenology, and Intraspecific Trait Variation in a Mixed-Species Individual-Based Forest Dynamics Model  Part 2: Model Evaluation for Two Amazonian Sites.” http://dx.doi.org/10.5194/egusphere-2024-3106."
+  },
+  {
+    "objectID": "21_global.html",
+    "href": "21_global.html",
+    "title": "Global",
+    "section": "",
+    "text": "Summary. For a first test, global parameters taken from Schmitt et al. (2024). Discuss limits and which parameter would deserve calibration/tuning.\n\nWe first used back parameters calibrated for Paracou from Schmitt et al. (2024) for a first test.\n\n\n\n\nSchmitt, Sylvain, Fabian Fischer, James Ball, Nicolas Barbier, Marion Boisseaux, Damien Bonal, Benoit Burban, et al. 2024. “TROLL 4.0: Representing Water and Carbon Fluxes, Leaf Phenology, and Intraspecific Trait Variation in a Mixed-Species Individual-Based Forest Dynamics Model  Part 2: Model Evaluation for Two Amazonian Sites.” http://dx.doi.org/10.5194/egusphere-2024-3106."
+  },
+  {
+    "objectID": "22_species.html",
+    "href": "22_species.html",
+    "title": "Species",
+    "section": "",
+    "text": "Summary. For a first test, species parameters taken from Schmitt et al. (2024). Discuss limits and including more traits for more species such Vleminckx et al. (2021) or using Gentry ivnentories.\n\n\n\n\n\nSchmitt, Sylvain, Fabian Fischer, James Ball, Nicolas Barbier, Marion Boisseaux, Damien Bonal, Benoit Burban, et al. 2024. “TROLL 4.0: Representing Water and Carbon Fluxes, Leaf Phenology, and Intraspecific Trait Variation in a Mixed-Species Individual-Based Forest Dynamics Model  Part 2: Model Evaluation for Two Amazonian Sites.” http://dx.doi.org/10.5194/egusphere-2024-3106.\n\n\nVleminckx, Jason, Claire Fortunel, Oscar Valverde-Barrantes, C. E. Timothy Paine, Julien Engel, Pascal Petronelli, Aurélie K. Dourdain, Juan Guevara, Solène Béroujon, and Christopher Baraloto. 2021. “Resolving Whole-Plant Economics from Leaf, Stem and Root Traits of 1467 Amazonian Tree Species.” Oikos 130 (7): 1193–1208. https://doi.org/10.1111/oik.08284."
+  },
+  {
+    "objectID": "23_soil.html",
+    "href": "23_soil.html",
+    "title": "Soil",
+    "section": "",
+    "text": "METRADICA soil maps."
+  },
+  {
+    "objectID": "24_climate.html",
+    "href": "24_climate.html",
+    "title": "Climate",
+    "section": "",
+    "text": "Summary. Muñoz-Sabater et al. (2021) ERA5-Land reanalysis.\n\n\n\n\n\nMuñoz-Sabater, Joaquín, Emanuel Dutra, Anna Agustí-Panareda, Clément Albergel, Gabriele Arduini, Gianpaolo Balsamo, Souhail Boussetta, et al. 2021. “ERA5-Land: A State-of-the-Art Global Reanalysis Dataset for Land Applications.” Earth System Science Data 13 (9): 4349–83. https://doi.org/10.5194/essd-13-4349-2021."
+  },
+  {
+    "objectID": "30_evaluation_data.html",
+    "href": "30_evaluation_data.html",
+    "title": "Evaluation data",
+    "section": "",
+    "text": "To do."
+  },
+  {
+    "objectID": "31_remote.html",
+    "href": "31_remote.html",
+    "title": "Remote sensing",
+    "section": "",
+    "text": "To evaluate spatial patterns. ToDo.\n\nHeight\n\nGEDI\nLVIS\n\nGPP\n\nSIF\n\nLAI\n\nMODIS\n\nBIOMASS\n\nFayad et al. (2016)\n\n\n\n\n\n\nFayad, Ibrahim, Nicolas Baghdadi, Stéphane Guitet, Jean-Stéphane Bailly, Bruno Hérault, Valéry Gond, Mahmoud El Hajj, and Dinh Ho Tong Minh. 2016. “Aboveground Biomass Mapping in French Guiana by Combining Remote Sensing, Forest Inventories and Environmental Data.” International Journal of Applied Earth Observation and Geoinformation 52 (October): 502–14. https://doi.org/10.1016/j.jag.2016.07.015."
+  },
+  {
+    "objectID": "32_guyafor.html",
+    "href": "32_guyafor.html",
+    "title": "Guyafor",
+    "section": "",
+    "text": "To evaluate punctually forest structure and dynamics (eventually diversity)."
+  },
+  {
+    "objectID": "33_guyaflux.html",
+    "href": "33_guyaflux.html",
+    "title": "Guyaflux",
+    "section": "",
+    "text": "To evaluate with a single point fluxes (maybe Schmitt et al. (2024) is enough).\n\n\n\n\nSchmitt, Sylvain, Fabian Fischer, James Ball, Nicolas Barbier, Marion Boisseaux, Damien Bonal, Benoit Burban, et al. 2024. “TROLL 4.0: Representing Water and Carbon Fluxes, Leaf Phenology, and Intraspecific Trait Variation in a Mixed-Species Individual-Based Forest Dynamics Model  Part 2: Model Evaluation for Two Amazonian Sites.” http://dx.doi.org/10.5194/egusphere-2024-3106."
+  },
+  {
+    "objectID": "41_dummy.html",
+    "href": "41_dummy.html",
+    "title": "Dummy",
+    "section": "",
+    "text": "Start with a 600-years spin-up in the subarea for a first test. Discuss how to summarise and aggregate raw outputs to save space."
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Bourgoin, C., G. Ceccherini, M. Girardello, C. Vancutsem, V. Avitabile,\nP. S. A. Beck, R. Beuchle, et al. 2024. “Human Degradation of\nTropical Moist Forests Is Greater Than Previously Estimated.”\nNature 631 (8021): 570–76. https://doi.org/10.1038/s41586-024-07629-0.\n\n\nFayad, Ibrahim, Nicolas Baghdadi, Stéphane Guitet, Jean-Stéphane Bailly,\nBruno Hérault, Valéry Gond, Mahmoud El Hajj, and Dinh Ho Tong Minh.\n2016. “Aboveground Biomass Mapping in French Guiana by Combining\nRemote Sensing, Forest Inventories and Environmental Data.”\nInternational Journal of Applied Earth Observation and\nGeoinformation 52 (October): 502–14. https://doi.org/10.1016/j.jag.2016.07.015.\n\n\nMaréchaux, Isabelle, Fabian Jörg Fischer, Sylvain Schmitt, and Jérôme\nChave. 2024. “TROLL 4.0: Representing Water and Carbon Fluxes,\nLeaf Phenology and Intraspecific Trait Variation in a Mixed-Species\nIndividual-Based Forest Dynamics Model  Part 1: Model\nDescription.” http://dx.doi.org/10.5194/egusphere-2024-3104.\n\n\nMuñoz-Sabater, Joaquín, Emanuel Dutra, Anna Agustí-Panareda, Clément\nAlbergel, Gabriele Arduini, Gianpaolo Balsamo, Souhail Boussetta, et al.\n2021. “ERA5-Land: A State-of-the-Art Global Reanalysis Dataset for\nLand Applications.” Earth System Science Data 13 (9):\n4349–83. https://doi.org/10.5194/essd-13-4349-2021.\n\n\nSchmitt, Sylvain, Fabian Fischer, James Ball, Nicolas Barbier, Marion\nBoisseaux, Damien Bonal, Benoit Burban, et al. 2024. “TROLL 4.0:\nRepresenting Water and Carbon Fluxes, Leaf Phenology, and Intraspecific\nTrait Variation in a Mixed-Species Individual-Based Forest Dynamics\nModel  Part 2: Model Evaluation for Two Amazonian\nSites.” http://dx.doi.org/10.5194/egusphere-2024-3106.\n\n\nVleminckx, Jason, Claire Fortunel, Oscar Valverde-Barrantes, C. E.\nTimothy Paine, Julien Engel, Pascal Petronelli, Aurélie K. Dourdain,\nJuan Guevara, Solène Béroujon, and Christopher Baraloto. 2021.\n“Resolving Whole-Plant Economics from Leaf, Stem and\nRoot Traits of 1467 Amazonian Tree Species.” Oikos 130\n(7): 1193–1208. https://doi.org/10.1111/oik.08284."
+  }
+]

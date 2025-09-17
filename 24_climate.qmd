@@ -1,0 +1,8 @@
+```{r set}
+#| include: false
+library(tidyverse)
+```
+
+# Climate {.unnumbered}
+
+> **Summary.** @muñoz-sabater2021 ERA5-Land reanalysis.

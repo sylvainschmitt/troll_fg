@@ -1,0 +1,14 @@
+BootStrap: docker
+From: rocker/tidyverse
+
+%labels
+  Author Sylvain Schmitt
+
+%help
+  This will run rcontroll
+    
+%post
+    apt-get -y update
+    apt-get -y install libudunits2-dev libcurl4-openssl-dev libssl-dev libgdal-dev libgsl-dev libnode-dev libsodium-dev xorg libx11-dev libglu1-mesa-dev libfreetype6-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libabsl-dev cmake
+    Rscript -e 'options(Ncpus = parallel::detectCores()); devtools::install_github("sylvainschmitt/rcontroll", ref = "TROLLV4", dependencies = c("Depends", "Imports", "LinkingTo"))'
+

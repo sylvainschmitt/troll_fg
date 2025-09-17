@@ -1,0 +1,18 @@
+```{r set}
+#| include: false
+library(tidyverse)
+```
+
+# Remote sensing {.unnumbered}
+
+To evaluate spatial patterns. ToDo.
+
+-   Height
+    -   GEDI
+    -   LVIS
+-   GPP
+    -   SIF
+-   LAI
+    -   MODIS
+-   BIOMASS
+    -   @fayad2016

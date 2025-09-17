@@ -1,0 +1,8 @@
+```{r set}
+#| include: false
+library(tidyverse)
+```
+
+# Dummy {.unnumbered}
+
+Start with a 600-years spin-up in the subarea for a first test. Discuss how to summarise and aggregate raw outputs to save space.

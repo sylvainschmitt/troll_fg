@@ -1,0 +1,13 @@
+```{r set}
+#| include: false
+library(tidyverse)
+```
+
+# French Guiana {.unnumbered}
+
+-   French Guiana limits
+-   TMF undisturbed forests (@bourgoin2024)
+-   Other limits?
+-   Guyafor distribution on it
+-   Guyaflux position
+-   Subarea for a first test?

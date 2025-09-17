@@ -1,0 +1,45 @@
+---
+title: "Simulations"
+date: today
+date-format: medium
+format: 
+  gfm:
+    toc: true
+    toc-depth: 2
+---
+
+`snakemake` and `singularity` workflow to run all simulations
+
+## `singularity`
+
+The singularity image is used by the `snakemake` workflow. It contains `TROLL 4.0`, corresponding `rcontroll` version and associated R packages.
+
+To build:
+
+``` bash
+sudo singularity build rcontroll.sif rcontroll.def
+```
+
+To use:
+
+``` bash
+singularity shell -e troll4.sif 
+```
+
+> `-e` to avoid conflict with local environment
+
+## `snakemake`
+
+Bla
+
+``` bash
+snakemake -np
+```
+
+## content
+
+-   `...`:
+
+```{r, comment=""}
+fs::dir_tree()
+```

@@ -1,0 +1,8 @@
+*
+!.gitignore
+!README.md
+!README.qmd
+!era
+!cmip6
+!cordex
+

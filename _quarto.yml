@@ -1,0 +1,40 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "TROLL FG"
+  author: "Sylvain Schmitt"
+  date: last-modified
+  chapters:
+    - index.qmd
+    - part: 10_area.qmd
+      chapters: 
+        - 11_fg.qmd
+        - 12_grid.qmd
+    - part: 20_input_data.qmd
+      chapters: 
+        - 21_global.qmd
+        - 22_species.qmd
+        - 23_soil.qmd
+        - 24_climate.qmd
+    - part: 30_evaluation_data.qmd
+      chapters: 
+        - 31_remote.qmd
+        - 32_guyafor.qmd
+        - 33_guyaflux.qmd
+    - part: 40_experiments.qmd
+      chapters: 
+        - 41_dummy.qmd
+  appendices:
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    code-fold: true
+    number-depth: -1
+
+editor: visual

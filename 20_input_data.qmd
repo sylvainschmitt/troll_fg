@@ -1,0 +1,3 @@
+# Input data {.unnumbered}
+
+> **Summary**. for a first test using @schmitt2024 species and global parameters, @muñoz-sabater2021 ERA5-Land reanalysis, and METRADICA soil maps.

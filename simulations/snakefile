@@ -1,0 +1,32 @@
+configfile: "config.yml"
+
+reps = ["R" + str(item) for item in list(range(1, config["rep"]+1))]
+
+rule all:
+   input:
+        expand("results/spinup/{rep}", rep=reps)
+        
+rule spinup:
+    input:
+        "data/climate_spinup.tsv",
+        "data/species.tsv",
+        "data/soil.tsv"
+    output:
+        directory("results/spinup/{rep}")
+    log:
+        "results/logs/spinup_{rep}.log"
+    benchmark:
+        "results/benchmarks/spinup_{rep}.benchmark.txt"
+    singularity:
+        config["troll"]
+    threads: 1
+    params:
+        cra=config["cra"],
+        crb=config["crb"],
+        m=config["m"],
+        a0=config["a0"],
+        b0=config["b0"],
+        delta=config["delta"],
+        test=config["test"]
+    script:
+        "scripts/spinup.R"
