@@ -5,8 +5,9 @@ sink(log_file, append = TRUE)
 
 # snakemake vars
 climate_file <- snakemake@input[[1]]
-species_file <- snakemake@input[[2]]
-soil_file <- snakemake@input[[3]]
+correspondence_file <- snakemake@input[[2]]
+species_file <- snakemake@input[[3]]
+soil_file <- snakemake@input[[4]]
 folderout <- snakemake@output[[1]]
 x <- as.numeric(snakemake@params$x)
 y <- as.numeric(snakemake@params$y)
@@ -19,19 +20,20 @@ delta <- as.numeric(snakemake@params$delta)
 test <- snakemake@params$test
 
 # test
-# climate_file <- "simulations/data/climate.tsv"
-# species_file <- "simulations/data/species.tsv"
-# soil_file <- "simulations/data/soil.tsv"
-# folderout <- "results/spinup/sim_-52.95_4.05_R1"
-# x_pos <- -52.95
-# y_pos <- 4.05
-# cra <- 1.80
-# crb <- 0.3860
-# m <- 0.035
-# a0 <- 0.2
-# b0 <- 0.015
-# delta <- 0.1
-# test <- TRUE
+climate_file <- "simulations/data/era.tsv"
+correspondence_file <- "simulations/data/correspondence_era"
+species_file <- "simulations/data/species.tsv"
+soil_file <- "simulations/data/soil.tsv"
+folderout <- "results/spinup/sim_-52.95_4.05_R1"
+x_pos <- -52.95
+y_pos <- 4.05
+cra <- 1.80
+crb <- 0.3860
+m <- 0.035
+a0 <- 0.2
+b0 <- 0.015
+delta <- 0.1
+test <- TRUE
 
 # libraries
 library(tidyverse)
@@ -40,37 +42,48 @@ library(rcontroll)
 # code
 name <- tail(str_split_1(folderout, "/"), 1)
 
-# climate <- read_tsv(climate_file) %>% 
-#   arrange(date) %>% 
-#   filter(paste0(month(date), "-", day(date)) != "2-29") %>% 
-#   mutate(snet = ifelse(snet <= 1.1, 1.1, snet)) %>% 
-#   mutate(vpd = ifelse(vpd <= 0.011, 0.011, vpd)) %>% 
-#   mutate(ws = ifelse(ws <= 0.11, 0.11, ws))
-# 
-# clim <-   climate %>%
-#   mutate(time = hour(date)) %>%
-#   mutate(date = date(date)) %>%
-#   select(date, time, tas, pr) %>%
-#   mutate(tas = ifelse(time < 6, NA, tas)) %>%
-#   mutate(tas = ifelse(time >= 18, NA, tas)) %>%
-#   group_by(date) %>%
-#   summarise(
-#     NightTemperature = mean(tas, na.rm = TRUE),
-#     Rainfall = sum(pr, na.rm = TRUE)
-#   ) %>%
-#   select(-date)
-# 
-# ndays <- length(unique(date(climate$date)))
-# day <- climate %>% 
-#   rename(Temp = tas, Snet = snet, VPD = vpd, WS = ws) %>%
-#   mutate(time_hour = hour(date)) %>%
-#   filter(time_hour >= 6, time_hour < 18) %>%
-#   select(-time_hour) %>%
-#   mutate(time_numeric = hour(date) + minute(date) / 60) %>%
-#   mutate(DayJulian = rep(1:ndays, each = 24)) %>% 
-#   select(DayJulian, time_numeric, Temp, Snet, VPD, WS)
+coords_era <- read_tsv(correspondence_file) %>% 
+  filter(X == x_pos, Y == y_pos)
 
-# n <- as.numeric(nrow(clim))
+climate_raw <- read_tsv(climate_file) %>% 
+  filter(near(lon, coords_era$lon)) %>% 
+  filter(near(lat, coords_era$lat))
+
+climate <- climate_raw %>%
+  filter(year(time) %in% 1980:2024) %>% 
+  arrange(date) %>%
+  filter(paste0(month(date), "-", day(date)) != "2-29") %>%
+  mutate(snet = ifelse(snet <= 1.1, 1.1, snet)) %>%
+  mutate(vpd = ifelse(vpd <= 0.011, 0.011, vpd)) %>%
+  mutate(ws = ifelse(ws <= 0.11, 0.11, ws))
+
+# we need to interpolate half hourly values from ERA5-Land
+# we need to generate 556 extra years from 4142 to 1979
+ 
+clim <-   climate %>%
+  mutate(time = hour(date)) %>%
+  mutate(date = date(date)) %>%
+  select(date, time, tas, pr) %>%
+  mutate(tas = ifelse(time < 6, NA, tas)) %>%
+  mutate(tas = ifelse(time >= 18, NA, tas)) %>%
+  group_by(date) %>%
+  summarise(
+    NightTemperature = mean(tas, na.rm = TRUE),
+    Rainfall = sum(pr, na.rm = TRUE)
+  ) %>%
+  select(-date)
+
+ndays <- length(unique(date(climate$date)))
+day <- climate %>%
+  rename(Temp = tas, Snet = snet, VPD = vpd, WS = ws) %>%
+  mutate(time_hour = hour(date)) %>%
+  filter(time_hour >= 6, time_hour < 18) %>%
+  select(-time_hour) %>%
+  mutate(time_numeric = hour(date) + minute(date) / 60) %>%
+  mutate(DayJulian = rep(1:ndays, each = 24)) %>%
+  select(DayJulian, time_numeric, Temp, Snet, VPD, WS)
+
+n <- as.numeric(nrow(clim))
 if(test)
   n <- 10
 

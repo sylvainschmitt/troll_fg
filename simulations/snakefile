@@ -12,7 +12,8 @@ rule all:
         
 rule spinup:
     input:
-        # "data/climate.tsv",
+        "data/era.tsv",
+        "data/correspondence_era.tsv",
         "data/species.tsv",
         "data/soil.tsv"
     output:
@@ -36,3 +37,7 @@ rule spinup:
         test=config["test"]
     script:
         "scripts/spinup.R"
+        
+# Need to add an extract rule from simulation output to reduce data to download
+# back from the server. But at first the full simulations outputs will be kept
+# on the server in case we want to extend outputs.

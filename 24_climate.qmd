@@ -1,11 +1,13 @@
 ```{r set}
 #| include: false
 library(tidyverse)
+library(sf)
+library(terra)
 ```
 
 # Climate {.unnumbered}
 
-ERA5-Land reanalysis [@muñoz-sabater2021] have a grid matching the 10-km grid we used.
+ERA5-Land reanalysis [@muñoz-sabater2021] have a grid matching the 10-km grid we used. They show limited monthly variation in the test area but still a strong coast to inland gradient as well as a slight east-west gradient. Due to resolution issue we have to remove 4 grid cells that does not match ERA5-Land from our simulations, bringing them to 86.
 
 ```{r climate_monthly}
 #| eval: false
@@ -40,7 +42,7 @@ climate %>%
 #| message: false
 #| warning: false
 #| fig-cap: "Caption."
-cells <- read_tsv("data/derived_data/grid.tsv") %>% 
+cells <- read_tsv("data/derived_data/grid_era.tsv") %>% 
   rename(lon = X, lat = Y) %>% 
   mutate(value = 1)
 climate %>% 
@@ -65,4 +67,34 @@ climate %>%
   xlab("") + ylab("")
 ```
 
-\> Empty cells in ERA5-Land need to be removed from the grid for first tests, moreover and index must be created of (X,Y) grid junction to (lon,lat) ERA5-Land for further easy sub-setting in the spin-up.R function from the workflow.
+```{r grid_era}
+#| eval: false
+non_empty <- extract(clim_r[[1]], vect(grid)) %>% 
+  mutate(na = is.na(AGB_16122015)) %>% 
+  group_by(ID) %>% 
+  summarise(na = sum(na)/n()) %>% 
+  filter(na <= 0.5)
+clim_r <- climate %>% 
+  filter(year(date) == 2024) %>% 
+  group_by(lon, lat) %>% 
+  summarise(
+    snet = mean(snet),
+    tas = mean(tas),
+    vpd = mean(vpd),
+    ws = mean(ws),
+    pr = sum(pr)
+  ) %>% 
+  rast()
+cells <- read_tsv("data/derived_data/grid.tsv") %>% 
+  st_as_sf(coords = c("X", "Y"), crs = 4326)
+non_empty <- extract(clim_r[[1]], cells) %>% 
+  filter(!is.na(snet))
+read_tsv("data/derived_data/grid.tsv")[non_empty$ID,] %>% 
+  write_tsv("data/derived_data/grid_era.tsv")
+coords_era <- extract(clim_r[[1]], cells, xy = TRUE) %>% 
+  select(-ID, -snet) %>% 
+  rename(lon = x, lat = y)
+read_tsv("data/derived_data/grid.tsv") %>% 
+  bind_cols(coords_era) %>% 
+  write_tsv("data/derived_data/correspondence_era")
+```
