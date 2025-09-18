@@ -1,8 +1,79 @@
 ```{r set}
 #| include: false
 library(tidyverse)
+library(sf)
+library(terra)
 ```
 
 # Soil {.unnumbered}
 
-METRADICA soil maps.
+We used the soil maps from French Guiana from the METRADICA project (I. Maréchaux pers. com.). They showed an interesting variation among cells and the within cell variation in soil granulometry was low with a median from 1.8 to 3.9%.
+
+```{r soil}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+soil <- list.files("data/raw_data/metradica_soil", full.names = TRUE) %>% 
+  rast()
+names(soil) <- c("clay", "sand", "silt")
+plot(soil[[1:2]])
+```
+
+```{r soil_area}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+area <- tibble(lon = c(-53, -52), lat = c(4.0, 5.0)) %>% 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% 
+  st_bbox() %>% 
+  st_as_sfc()
+guyafor <- read_tsv("data/raw_data/guyafor.tsv") %>% 
+  select(Forest, Plot, Xutm, Yutm) %>% 
+  group_by(Forest, Plot) %>% 
+  summarise_all(mean, na.rm = TRUE) %>% 
+  na.omit() %>% 
+  st_as_sf(coords = c("Xutm", "Yutm"), crs = 32622) %>% 
+  st_intersection(area %>% st_transform(crs = 32622))
+grid <- st_make_grid(area, n = c(10, 10))
+soil <- soil %>% crop(area %>% st_transform(crs = 32622) %>% st_buffer(2*10^3))
+ggplot(grid) +
+  tidyterra::geom_spatraster(data = soil[[1]], alpha = .5) +
+  scale_fill_viridis_c("Clay [ % ]", na.value = "transparent") +
+  geom_sf(fill = NA) +
+  geom_sf(data = guyafor) +
+  theme_bw()
+```
+
+```{r delta_soil}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+extract(soil, vect(grid%>% st_transform(crs = 32622)), exact = TRUE) %>% 
+  select(-fraction) %>% 
+  gather(variable, value, -ID) %>% 
+  group_by(ID, variable) %>% 
+  mutate(delta = abs(value - mean(value))) %>% 
+  # group_by(variable) %>% summarise(delta = median(delta, na.rm = TRUE))
+  ggplot(aes(delta)) +
+  geom_histogram() +
+  theme_bw() +
+  facet_wrap(~ variable) +
+  xlab(expression('Cell'~Delta~Granulometry~"["~"%"~"]"))
+```
+
+```{r soil_save}
+#| eval: false
+soil_area <- soil %>% 
+  project(rast(vect(grid)), method = "average")
+points <- read_tsv("data/derived_data/grid.tsv") %>% 
+  st_as_sf(coords = c("X", "Y"), crs = 4326)
+extract(soil_area, points, xy = TRUE) %>% 
+  select(-ID) %>% 
+  rename(proportion_Silt = silt,
+         proportion_Clay = clay,
+         proportion_Sand = sand) %>% 
+  mutate(layer_thickness = list(c(0.10, 0.23, 0.4, 0.8, 0.97))) %>% 
+  unnest(layer_thickness) %>% 
+  select(x, y, layer_thickness, proportion_Silt, proportion_Clay, proportion_Sand) %>% 
+  write_tsv("data/derived_data/soil.tsv")
+```

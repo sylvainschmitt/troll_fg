@@ -2,25 +2,31 @@ configfile: "config.yml"
 
 reps = ["R" + str(item) for item in list(range(1, config["rep"]+1))]
 
+import pandas as pd
+grid = pd.read_table(config["grid"])
+grid["id"] =  grid.X.astype("str") + "_" +  grid.Y.astype("str")
+
 rule all:
    input:
-        expand("results/spinup/{rep}", rep=reps)
+        expand("results/spinup/sim_{id}_{rep}", id = grid.id, rep=reps)
         
 rule spinup:
     input:
-        "data/climate_spinup.tsv",
+        # "data/climate.tsv",
         "data/species.tsv",
         "data/soil.tsv"
     output:
-        directory("results/spinup/{rep}")
+        directory("results/spinup/sim_{x}_{y}_{rep}")
     log:
-        "results/logs/spinup_{rep}.log"
+        "results/logs/spinup_{x}_{y}_{rep}.log"
     benchmark:
-        "results/benchmarks/spinup_{rep}.benchmark.txt"
+        "results/benchmarks/spinup_{x}_{y}_{rep}.benchmark.txt"
     singularity:
         config["troll"]
     threads: 1
     params:
+        x="{x}",
+        y="{y}",
         cra=config["cra"],
         crb=config["crb"],
         m=config["m"],

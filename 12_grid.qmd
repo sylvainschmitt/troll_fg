@@ -7,26 +7,32 @@ library(terra)
 
 # Grid {.unnumbered}
 
-We aim at using a 10 km by 10 km grid, but will first do a test with a 20 km by 20 km grid. We will first do a test with 400 simulations, covering an area of 20 x 20 = 400 km or approximatively 0.2°. We will use cell centre to define environment and simulate a representative 4-ha simulation. We can first represent the grid and evaluate expected biomass variation from @fayad2016 and soil and climate variation from input data (see in dedicated pages). **The issue is that there is low biomass variation in the area in which to conduct the test. Perhaps we should use two areas.**
+We decided to use a 10 km grid, first testing on a total area of 0.1°, corresponding to 90 simulations after removing empty cell (more than 50% missing value). We will use cell centre to define environment and simulate a representative 4-ha simulation. We can first represent the grid and evaluate expected biomass variation from @fayad2016 and soil and climate variation from input data (see in dedicated pages).
 
 ```{r grid}
 #| message: false
 #| warning: false
 #| fig-cap: "Caption."
+area <- tibble(lon = c(-53, -52), lat = c(4.0, 5.0)) %>% 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% 
+  st_bbox() %>% 
+  st_as_sfc()
 guyafor <- read_tsv("data/raw_data/guyafor.tsv") %>% 
-  filter(Forest %in% c("Nouragues", "Montagne Tortue")) %>% 
   select(Forest, Plot, Xutm, Yutm) %>% 
   group_by(Forest, Plot) %>% 
   summarise_all(mean, na.rm = TRUE) %>% 
   na.omit() %>% 
-  st_as_sf(coords = c("Xutm", "Yutm"), crs = 32622)
-area <- tibble(lon = c(-52.7, -52.3), lat = c(4.0, 4.4)) %>% 
-  st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% 
-  st_bbox() %>% 
-  st_as_sfc()
-grid <- st_make_grid(area, n = c(20, 20))
+  st_as_sf(coords = c("Xutm", "Yutm"), crs = 32622) %>% 
+  st_intersection(area %>% st_transform(crs = 32622))
+grid <- st_make_grid(area, n = c(10, 10))
 agb <- rast("data/raw_data/fayad_2016/AGB_16122015.tif") %>% 
   crop(area %>% st_transform(crs = 32622) %>% st_buffer(2*10^3))
+non_empty <- extract(agb, vect(grid%>% st_transform(crs = 32622)), exact = TRUE) %>% 
+  mutate(na = is.na(AGB_16122015)) %>% 
+  group_by(ID) %>% 
+  summarise(na = sum(na)/n()) %>% 
+  filter(na <= 0.5)
+grid <- grid[non_empty$ID]
 ggplot(grid) +
   tidyterra::geom_spatraster(data = agb, alpha = .5) +
   scale_fill_viridis_c(na.value = "transparent", guide = "none") +
@@ -35,7 +41,7 @@ ggplot(grid) +
   theme_bw()
 ```
 
-The within cell variation in biomass was low with a median around 10 Mg/ha.
+The within cell variation in biomass was low with a median around 13.5 Mg/ha.
 
 ```{r delta_agb}
 #| message: false
@@ -44,8 +50,19 @@ The within cell variation in biomass was low with a median around 10 Mg/ha.
 extract(agb, vect(grid%>% st_transform(crs = 32622)), exact = TRUE) %>% 
   group_by(ID) %>% 
   mutate(delta = abs(AGB_16122015 - mean(AGB_16122015))) %>% 
+  # ungroup() %>% summarise_all(median, na.rm = TRUE)
   ggplot(aes(delta)) +
   geom_histogram() +
   theme_bw() +
   xlab(expression('Cell'~Delta~AGB~"["~Mg~ha~"]"))
+```
+
+```{r grid_save}
+#| eval: false
+grid %>% 
+  st_centroid() %>% 
+  st_coordinates() %>% 
+  as_tibble() %>% 
+  mutate_all(round, 2) %>% 
+  write_tsv("data/derived_data/grid.tsv")
 ```

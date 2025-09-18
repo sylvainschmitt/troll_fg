@@ -7,9 +7,9 @@ library(terra)
 
 # French Guiana {.unnumbered}
 
-## Administrative
+Based on the JRC's Tropical Moist Forest product [@bourgoin2024], we decided to work at the scale of French Guiana, focusing on undisturbed forests. We used Fayad's biomass map to investigate the required resolution for modelling biomass spatially. We decided to use a 10 km grid, first testing on a total area of 0.1°, corresponding to 100 simulations.
 
-You can download GADM data for French Guiana from <https://gadm.org/download_country.html>.
+## Administrative
 
 ```{r gadm}
 #| message: false
@@ -23,8 +23,6 @@ ggplot(fg) +
 ```
 
 ## Undisturbed forests
-
-Based on TMF [@bourgoin2024]
 
 ```{r tmf}
 #| message: false
@@ -73,7 +71,7 @@ ggplot(fg) +
 
 ## Test area
 
-Starting from the biomass map of @fayad2016, we can compute a semi-variogram to help choose the resolution of interest. We can already see \>50% variation above 10-km, but for test purposes we will test with \>65% variation with a 20-km grid.
+Starting from the biomass map of @fayad2016, we can compute a semi-variogram to help choose the resolution of interest. We can already see \>50% variation above 10-km.
 
 ```{r vgm}
 #| message: false
@@ -94,14 +92,14 @@ t %>%
   geom_vline(xintercept = 20, linetype = "dashed")
 ```
 
-We can select a small area with varying biomass based on @fayad2016 map. If we aim for a grid size of 20 km by 20 km, we can limit our test to a 400 simulations, covering an area of 20 x 20 = 400 km or approximatively 0.4°.
+We can select a small area with varying biomass based on @fayad2016 map. If we aim for a grid size of 10 km by 10 km, we can limit our test to a 100 simulations, covering an area of 10 x 10 = 100 km or approximatively 1°.
 
 ```{r area_fg}
 #| message: false
 #| warning: false
 #| fig-cap: "Caption."
 agb <- rast("data/raw_data/fayad_2016/AGB_16122015.tif")
-area <- tibble(lon = c(-52.7, -52.3), lat = c(4.0, 4.4)) %>% 
+area <- tibble(lon = c(-53, -52), lat = c(4.0, 5.0)) %>% 
   st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% 
   st_bbox() %>% 
   st_as_sfc()

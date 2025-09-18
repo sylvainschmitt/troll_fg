@@ -1,3 +1,3 @@
 # Study area {.unnumbered}
 
-> **Summary**. French Guiana undisturbed forest using TMF with a 10x10km grid.
+Based on the JRC's Tropical Moist Forest product [@bourgoin2024], we decided to work at the scale of French Guiana, focusing on undisturbed forests. We used Fayad's biomass map to investigate the required resolution for modelling biomass spatially. We decided to use a 10 km grid, first testing on a total area of 0.1°, corresponding to 100 simulations. The resulting variation in biomass within grid cells was low, with a median of 13.5 Mg/ha.

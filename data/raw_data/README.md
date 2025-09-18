@@ -1,6 +1,6 @@
 # Raw data
 Sylvain Schmitt -
-Sep 17, 2025
+Sep 18, 2025
 
 This folder will contains the raw data for all anlayses. In particular:
 
@@ -14,6 +14,9 @@ This folder will contains the raw data for all anlayses. In particular:
   <https://entrepot.recherche.data.gouv.fr/dataset.xhtml?persistentId=doi:10.17180/forest-biomass-fr-guiana-map-2016>
 - `matradica_soil/`: Soil maps from French Guiana from the METRADICA
   project, I. Maréchaux pers. com.
+- `Paracou_species_troll.tsv`: Paracou species data from @schmitt2024
+- `era/`: ERA5-Land data \[@muñoz-sabater2021\] downloaded from the
+  google earth engine using a python script and mamba environment
 
 ``` r
 fs::dir_tree()
@@ -21,9 +24,13 @@ fs::dir_tree()
 
     .
     ├── JRC_TMF_UndisturbedDegradedForest_v1_1982_2024_SAM_ID49_N10_W60.tif
+    ├── Paracou_species_troll.tsv
     ├── README.md
     ├── README.qmd
     ├── README.rmarkdown
+    ├── era
+    │   ├── get_era_ee.py
+    │   └── get_era_ee.yml
     ├── fayad_2016
     │   ├── AGB_16122015.tfw
     │   ├── AGB_16122015.tif
@@ -48,7 +55,6 @@ fs::dir_tree()
     │   └── gadm41_GUF_2.shx
     ├── guyafor.tsv
     └── metradica_soil
-        ├── apawd12m.tif
         ├── clay.tif
         ├── sand.tif
         └── silt.tif

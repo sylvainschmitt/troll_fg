@@ -17,6 +17,7 @@ This folder will contains the raw data for all anlayses. In particular:
 -   `fayad_2016/`: Biomass map of @fayad2016 from <https://entrepot.recherche.data.gouv.fr/dataset.xhtml?persistentId=doi:10.17180/forest-biomass-fr-guiana-map-2016>
 -   `matradica_soil/`: Soil maps from French Guiana from the METRADICA project, I. Maréchaux pers. com.
 -   `Paracou_species_troll.tsv`: Paracou species data from @schmitt2024
+-   `era/`: ERA5-Land data [@muñoz-sabater2021] downloaded from the google earth engine using a python script and mamba environment
 
 ```{r, comment=""}
 fs::dir_tree()

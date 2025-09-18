@@ -5,4 +5,64 @@ library(tidyverse)
 
 # Climate {.unnumbered}
 
-> **Summary.** @muñoz-sabater2021 ERA5-Land reanalysis.
+ERA5-Land reanalysis [@muñoz-sabater2021] have a grid matching the 10-km grid we used.
+
+```{r climate_monthly}
+#| eval: false
+climate <- vroom::vroom("data/raw_data/era/era.tsv") %>% 
+  group_by(lon, lat, date = lubridate::floor_date(time, "month")) %>% 
+  summarise(
+    snet = mean(snet),
+    tas = mean(tas),
+    vpd = mean(vpd),
+    ws = mean(ws),
+    pr = sum(pr)
+  )
+write_tsv(climate, "data/derived_data/climate_monthly.tsv")
+```
+
+```{r monthly_var}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+climate <- read_tsv("data/derived_data/climate_monthly.tsv")
+climate %>% 
+  gather(variable, value, -lat, -lon, -date) %>% 
+  ggplot(aes(date, value)) +
+  geom_line(aes(group = paste(lon, lat)), alpha = .1) +
+  facet_wrap(~variable, scales = "free_y", nrow = 5) +
+  theme_bw() +
+  xlab("") +
+  ylab("")
+```
+
+```{r sp_var}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+cells <- read_tsv("data/derived_data/grid.tsv") %>% 
+  rename(lon = X, lat = Y) %>% 
+  mutate(value = 1)
+climate %>% 
+  filter(year(date) == 2024) %>% 
+  group_by(lon, lat) %>% 
+  summarise(
+    snet = mean(snet),
+    tas = mean(tas),
+    vpd = mean(vpd),
+    ws = mean(ws),
+    pr = sum(pr)
+  ) %>% 
+  mutate(across(c("snet", "tas", "vpd", "ws", "pr"), scale)) %>% 
+  gather(variable, value, -lon, -lat) %>% 
+  ggplot(aes(lon, lat, fill = value)) +
+  geom_raster() +
+  geom_point(data = cells) +
+  theme_bw() +
+  facet_wrap(~ variable) +
+  scale_fill_viridis_c(na.value = "transparent", guide = "none") +
+  coord_equal() +
+  xlab("") + ylab("")
+```
+
+\> Empty cells in ERA5-Land need to be removed from the grid for first tests, moreover and index must be created of (X,Y) grid junction to (lon,lat) ERA5-Land for further easy sub-setting in the spin-up.R function from the workflow.

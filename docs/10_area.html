@@ -20,7 +20,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -254,11 +273,14 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<blockquote class="blockquote">
-<p><strong>Summary</strong>. French Guiana undisturbed forest using TMF with a 10x10km grid.</p>
-</blockquote>
+<p>Based on the JRC’s Tropical Moist Forest product <span class="citation" data-cites="bourgoin2024">(<a href="references.html#ref-bourgoin2024" role="doc-biblioref">Bourgoin et al. 2024</a>)</span>, we decided to work at the scale of French Guiana, focusing on undisturbed forests. We used Fayad’s biomass map to investigate the required resolution for modelling biomass spatially. We decided to use a 10 km grid, first testing on a total area of 0.1°, corresponding to 100 simulations. The resulting variation in biomass within grid cells was low, with a median of 13.5 Mg/ha.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-bourgoin2024" class="csl-entry" role="listitem">
+Bourgoin, C., G. Ceccherini, M. Girardello, C. Vancutsem, V. Avitabile, P. S. A. Beck, R. Beuchle, et al. 2024. <span>“Human Degradation of Tropical Moist Forests Is Greater Than Previously Estimated.”</span> <em>Nature</em> 631 (8021): 570–76. <a href="https://doi.org/10.1038/s41586-024-07629-0">https://doi.org/10.1038/s41586-024-07629-0</a>.
+</div>
+</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

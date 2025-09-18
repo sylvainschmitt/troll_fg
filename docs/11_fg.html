@@ -316,9 +316,9 @@ div.csl-indent {
 
 </header>
 
+<p>Based on the JRC’s Tropical Moist Forest product <span class="citation" data-cites="bourgoin2024">(<a href="references.html#ref-bourgoin2024" role="doc-biblioref">Bourgoin et al. 2024</a>)</span>, we decided to work at the scale of French Guiana, focusing on undisturbed forests. We used Fayad’s biomass map to investigate the required resolution for modelling biomass spatially. We decided to use a 10 km grid, first testing on a total area of 0.1°, corresponding to 100 simulations.</p>
 <section id="administrative" class="level2">
 <h2 class="anchored" data-anchor-id="administrative">Administrative</h2>
-<p>You can download GADM data for French Guiana from <a href="https://gadm.org/download_country.html" class="uri">https://gadm.org/download_country.html</a>.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -340,7 +340,6 @@ div.csl-indent {
 </section>
 <section id="undisturbed-forests" class="level2">
 <h2 class="anchored" data-anchor-id="undisturbed-forests">Undisturbed forests</h2>
-<p>Based on TMF <span class="citation" data-cites="bourgoin2024">(<a href="references.html#ref-bourgoin2024" role="doc-biblioref">Bourgoin et al. 2024</a>)</span></p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -404,7 +403,7 @@ div.csl-indent {
 </section>
 <section id="test-area" class="level2">
 <h2 class="anchored" data-anchor-id="test-area">Test area</h2>
-<p>Starting from the biomass map of <span class="citation" data-cites="fayad2016">Fayad et al. (<a href="references.html#ref-fayad2016" role="doc-biblioref">2016</a>)</span>, we can compute a semi-variogram to help choose the resolution of interest. We can already see &gt;50% variation above 10-km, but for test purposes we will test with &gt;65% variation with a 20-km grid.</p>
+<p>Starting from the biomass map of <span class="citation" data-cites="fayad2016">Fayad et al. (<a href="references.html#ref-fayad2016" role="doc-biblioref">2016</a>)</span>, we can compute a semi-variogram to help choose the resolution of interest. We can already see &gt;50% variation above 10-km.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -431,12 +430,12 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>We can select a small area with varying biomass based on <span class="citation" data-cites="fayad2016">Fayad et al. (<a href="references.html#ref-fayad2016" role="doc-biblioref">2016</a>)</span> map. If we aim for a grid size of 20 km by 20 km, we can limit our test to a 400 simulations, covering an area of 20 x 20 = 400 km or approximatively 0.4°.</p>
+<p>We can select a small area with varying biomass based on <span class="citation" data-cites="fayad2016">Fayad et al. (<a href="references.html#ref-fayad2016" role="doc-biblioref">2016</a>)</span> map. If we aim for a grid size of 10 km by 10 km, we can limit our test to a 100 simulations, covering an area of 10 x 10 = 100 km or approximatively 1°.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>agb <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/raw_data/fayad_2016/AGB_16122015.tif"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">lon =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">52.7</span>, <span class="sc">-</span><span class="fl">52.3</span>), <span class="at">lat =</span> <span class="fu">c</span>(<span class="fl">4.0</span>, <span class="fl">4.4</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">lon =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">53</span>, <span class="sc">-</span><span class="dv">52</span>), <span class="at">lat =</span> <span class="fu">c</span>(<span class="fl">4.0</span>, <span class="fl">5.0</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_bbox</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sfc</span>()</span>

@@ -9,4 +9,11 @@ snakemake -np
 sbatch job.sh
 ```
 
-## 
+## Limits
+
+-   Water table depth
+-   Soil depth
+-   Species diversity, pool and functional trait diversity
+-   Water stress response
+-   Within cell variation
+-   Temperature and water deficit response for projection

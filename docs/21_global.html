@@ -307,8 +307,7 @@ div.csl-indent {
 
 </header>
 
-<p>For a first test, global parameters taken from <span class="citation" data-cites="schmitt2024">Schmitt et al. (<a href="references.html#ref-schmitt2024" role="doc-biblioref">2024</a>)</span>. Discuss limits and which parameter would deserve calibration/tuning.</p>
-<p>We first used back parameters calibrated for Paracou from <span class="citation" data-cites="schmitt2024">Schmitt et al. (<a href="references.html#ref-schmitt2024" role="doc-biblioref">2024</a>)</span> for a first test.</p>
+<p>For a first test, global parameters we used back parameters calibrated for Paracou from <span class="citation" data-cites="schmitt2024">Schmitt et al. (<a href="references.html#ref-schmitt2024" role="doc-biblioref">2024</a>)</span>. A limit is the absence of calibration and tuning for mortality and crown radius allometry, which drive canopy packing, as well as the leaf-shedding parameters, which are important for TROLL4.0 dynamics.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -319,18 +318,19 @@ div.csl-indent {
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">m1 =</span> <span class="fl">0.035</span>,</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pheno_a0 =</span> <span class="fl">0.2</span>,</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">pheno_b0 =</span> <span class="fl">0.015</span>,</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">pheno_delta =</span> <span class="fl">0.1</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(param <span class="sc">%in%</span> <span class="fu">c</span>(</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nbiter"</span>, <span class="st">"HEIGHT"</span>, <span class="st">"length_dcell"</span>, <span class="st">"NV"</span>, <span class="st">"NH"</span>, <span class="st">"nbout"</span>, <span class="st">"nbspp"</span>,</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"DBH0"</span>, <span class="st">"H0"</span>, <span class="st">"CR_min"</span>, <span class="st">"CD0"</span>, <span class="st">"_SOIL_LAYER_WEIGHT"</span>,</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_WATER_RETENTION_CURVE"</span>, <span class="st">"_LL_parameterization"</span>, <span class="st">"_LA_regulation"</span>,</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_sapwood"</span>, <span class="st">"_seedsadditional"</span>, <span class="st">"_NONRANDOM"</span>, <span class="st">"Rseed"</span>,</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_GPPcrown"</span>, <span class="st">"_BASICTREEFALL"</span>, <span class="st">"_SEEDTRADEOFF"</span>,</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_CROWN_MM"</span>, <span class="st">"_OUTPUT_extended"</span>, <span class="st">"_OUTPUT_inventory"</span>,</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"extent_visual"</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  ))) <span class="sc">%&gt;%</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">pheno_delta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">WATER_RETENTION_CURVE =</span> <span class="dv">0</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(param <span class="sc">%in%</span> <span class="fu">c</span>(</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nbiter"</span>, <span class="st">"HEIGHT"</span>, <span class="st">"length_dcell"</span>, <span class="st">"NV"</span>, <span class="st">"NH"</span>, <span class="st">"nbout"</span>, <span class="st">"nbspp"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"DBH0"</span>, <span class="st">"H0"</span>, <span class="st">"CR_min"</span>, <span class="st">"CD0"</span>, <span class="st">"_SOIL_LAYER_WEIGHT"</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_WATER_RETENTION_CURVE"</span>, <span class="st">"_LL_parameterization"</span>, <span class="st">"_LA_regulation"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_sapwood"</span>, <span class="st">"_seedsadditional"</span>, <span class="st">"_NONRANDOM"</span>, <span class="st">"Rseed"</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_GPPcrown"</span>, <span class="st">"_BASICTREEFALL"</span>, <span class="st">"_SEEDTRADEOFF"</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_CROWN_MM"</span>, <span class="st">"_OUTPUT_extended"</span>, <span class="st">"_OUTPUT_inventory"</span>,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"extent_visual"</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  ))) <span class="sc">%&gt;%</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
