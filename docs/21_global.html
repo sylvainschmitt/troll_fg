@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 /* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
@@ -273,10 +307,280 @@ div.csl-indent {
 
 </header>
 
-<blockquote class="blockquote">
-<p><strong>Summary.</strong> For a first test, global parameters taken from <span class="citation" data-cites="schmitt2024">Schmitt et al. (<a href="references.html#ref-schmitt2024" role="doc-biblioref">2024</a>)</span>. Discuss limits and which parameter would deserve calibration/tuning.</p>
-</blockquote>
+<p>For a first test, global parameters taken from <span class="citation" data-cites="schmitt2024">Schmitt et al. (<a href="references.html#ref-schmitt2024" role="doc-biblioref">2024</a>)</span>. Discuss limits and which parameter would deserve calibration/tuning.</p>
 <p>We first used back parameters calibrated for Paracou from <span class="citation" data-cites="schmitt2024">Schmitt et al. (<a href="references.html#ref-schmitt2024" role="doc-biblioref">2024</a>)</span> for a first test.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rcontroll<span class="sc">::</span><span class="fu">generate_parameters</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">CR_a =</span> <span class="fl">1.80</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">CR_b =</span> <span class="fl">0.3860</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">m =</span> <span class="fl">0.035</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">m1 =</span> <span class="fl">0.035</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pheno_a0 =</span> <span class="fl">0.2</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">pheno_b0 =</span> <span class="fl">0.015</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">pheno_delta =</span> <span class="fl">0.1</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(param <span class="sc">%in%</span> <span class="fu">c</span>(</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nbiter"</span>, <span class="st">"HEIGHT"</span>, <span class="st">"length_dcell"</span>, <span class="st">"NV"</span>, <span class="st">"NH"</span>, <span class="st">"nbout"</span>, <span class="st">"nbspp"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"DBH0"</span>, <span class="st">"H0"</span>, <span class="st">"CR_min"</span>, <span class="st">"CD0"</span>, <span class="st">"_SOIL_LAYER_WEIGHT"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_WATER_RETENTION_CURVE"</span>, <span class="st">"_LL_parameterization"</span>, <span class="st">"_LA_regulation"</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_sapwood"</span>, <span class="st">"_seedsadditional"</span>, <span class="st">"_NONRANDOM"</span>, <span class="st">"Rseed"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_GPPcrown"</span>, <span class="st">"_BASICTREEFALL"</span>, <span class="st">"_SEEDTRADEOFF"</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_CROWN_MM"</span>, <span class="st">"_OUTPUT_extended"</span>, <span class="st">"_OUTPUT_inventory"</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"extent_visual"</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  ))) <span class="sc">%&gt;%</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 9%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">param</th>
+<th style="text-align: right;">value</th>
+<th style="text-align: left;">description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">cols</td>
+<td style="text-align: right;">200.00000</td>
+<td style="text-align: left;">/* nb of columns */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rows</td>
+<td style="text-align: right;">200.00000</td>
+<td style="text-align: left;">/* nb of rows */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SWtoPPFD</td>
+<td style="text-align: right;">2.27000</td>
+<td style="text-align: left;">/* convert short wave irradiance to PAR photons (cf.&nbsp;code) */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p_nonvert</td>
+<td style="text-align: right;">0.05000</td>
+<td style="text-align: left;">/* light incidence param (diff through turbid medium) */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">klight</td>
+<td style="text-align: right;">0.50000</td>
+<td style="text-align: left;">/* light attenuation in the canopy Beer-Lambert */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">phi</td>
+<td style="text-align: right;">0.10625</td>
+<td style="text-align: left;">/* quantum yield (in micromol C/micromol photon) */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">absorptance_leaves</td>
+<td style="text-align: right;">0.83000</td>
+<td style="text-align: left;">/* absorptance of individual leaves */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">theta</td>
+<td style="text-align: right;">0.70000</td>
+<td style="text-align: left;">/* parameter of the Farquhar model */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">g1</td>
+<td style="text-align: right;">3.77000</td>
+<td style="text-align: left;">/* parameter g1 of Medlyn et al s stomatal conductance model */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">g0</td>
+<td style="text-align: right;">5.00000</td>
+<td style="text-align: left;">/* minimum leaf conductance (mol m-2 s-1) */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pheno_a0</td>
+<td style="text-align: right;">0.20000</td>
+<td style="text-align: left;">/* threshold for change in old leaf shedding rate, in proportion of TLP */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">pheno_b0</td>
+<td style="text-align: right;">0.01500</td>
+<td style="text-align: left;">/* threshold for change in old leaf shedding rate, in proportion of tree hieght */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pheno_delta</td>
+<td style="text-align: right;">0.10000</td>
+<td style="text-align: left;">/* amplitude of change in old leaf shedding rate */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">vC</td>
+<td style="text-align: right;">0.02100</td>
+<td style="text-align: left;">/* variance of the flexion moment */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CR_a</td>
+<td style="text-align: right;">1.80000</td>
+<td style="text-align: left;">/* CR log intercept or Michaelis Menten initial growth */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CR_b</td>
+<td style="text-align: right;">0.38600</td>
+<td style="text-align: left;">/* CR log slope or Michaelis Menten asymptotic CR */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CD_a</td>
+<td style="text-align: right;">0.00000</td>
+<td style="text-align: left;">/* CD intercept (absolute value) */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CD_b</td>
+<td style="text-align: right;">0.20000</td>
+<td style="text-align: left;">/* CD slope (as fraction of tree height) */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">shape_crown</td>
+<td style="text-align: right;">0.72000</td>
+<td style="text-align: left;">/* crown shape parameter */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">dens</td>
+<td style="text-align: right;">1.00000</td>
+<td style="text-align: left;">/* initial leaf density (m<sup>2/m</sup>2) */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fallocwood</td>
+<td style="text-align: right;">0.35000</td>
+<td style="text-align: left;">/* fraction of biomass allocated to above ground wood (branch turnover+stem) */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">falloccanopy</td>
+<td style="text-align: right;">0.25000</td>
+<td style="text-align: left;">/* fraction of biomass allocated to canopy (leaves + reproductive organs + twigs) */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cseedrain</td>
+<td style="text-align: right;">50000.00000</td>
+<td style="text-align: left;">/* constant used to scale total seed rain per hectare across species (in next computation) */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nbs0</td>
+<td style="text-align: right;">10.00000</td>
+<td style="text-align: left;">/* nb of seeds produced and dispersed by each mature tree when SEEDTRADEOFF is not defined */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sigma_height</td>
+<td style="text-align: right;">0.19000</td>
+<td style="text-align: left;">/* intraspecific variation in tree height (lognormal) */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sigma_CR</td>
+<td style="text-align: right;">0.29000</td>
+<td style="text-align: left;">/* intraspecific variation in crown radius (lognormal) */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sigma_CD</td>
+<td style="text-align: right;">0.00000</td>
+<td style="text-align: left;">/* intraspecific variation in crown depth (lognormal) */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sigma_P</td>
+<td style="text-align: right;">0.24000</td>
+<td style="text-align: left;">/* intraspecific variation in leaf phosphorus (lognormal) */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sigma_N</td>
+<td style="text-align: right;">0.12000</td>
+<td style="text-align: left;">/* intraspecific variation in leaf nitrogen (lognormal) */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sigma_LMA</td>
+<td style="text-align: right;">0.24000</td>
+<td style="text-align: left;">/* intraspecific variation in LMA (lognormal) */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sigma_wsg</td>
+<td style="text-align: right;">0.06000</td>
+<td style="text-align: left;">/* intraspecific variation in wood specific gravity */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sigma_dbhmax</td>
+<td style="text-align: right;">0.05000</td>
+<td style="text-align: left;">/* intraspecific variation in maximum diameter */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sigma_leafarea</td>
+<td style="text-align: right;">0.48000</td>
+<td style="text-align: left;">/* intraspecific variation in leaf area (lognormal) */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sigma_tlp</td>
+<td style="text-align: right;">0.10000</td>
+<td style="text-align: left;">/* intraspecific variation in tlp (lognormal) */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">corr_CR_height</td>
+<td style="text-align: right;">0.00000</td>
+<td style="text-align: left;">/* correlation coefficient between crown radius and tree height */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">corr_N_P</td>
+<td style="text-align: right;">0.65000</td>
+<td style="text-align: left;">/* correlation coefficient between leaf nitrogen and leaf phosphorus */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">corr_N_LMA</td>
+<td style="text-align: right;">-0.43000</td>
+<td style="text-align: left;">/* correlation coefficient between leaf nitrogen and LMA */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">corr_P_LMA</td>
+<td style="text-align: right;">-0.39000</td>
+<td style="text-align: left;">/* correlation coefficient between leaf phosphorus and LMA */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">leafdem_resolution</td>
+<td style="text-align: right;">1.00000</td>
+<td style="text-align: left;">/* resolution of leaf demography model */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p_tfsecondary</td>
+<td style="text-align: right;">1.00000</td>
+<td style="text-align: left;">/* probability of secondary treefall */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">hurt_decay</td>
+<td style="text-align: right;">0.00000</td>
+<td style="text-align: left;">/* parameter determining how tree damages are repaired */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">crown_gap_fraction</td>
+<td style="text-align: right;">0.15000</td>
+<td style="text-align: left;">/* fraction of gaps in the crown */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">m</td>
+<td style="text-align: right;">0.03500</td>
+<td style="text-align: left;">/* minimal death rate */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">m1</td>
+<td style="text-align: right;">0.03500</td>
+<td style="text-align: left;">/* m1 (slope of death rate) */</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cair</td>
+<td style="text-align: right;">375.00000</td>
+<td style="text-align: left;">/* atmospheric CO2 concentration in micromol/mol */</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PRESS</td>
+<td style="text-align: right;">101.00000</td>
+<td style="text-align: left;">/* atmospheric pressure in kPa */</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">

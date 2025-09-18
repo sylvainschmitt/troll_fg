@@ -1,13 +1,127 @@
 ```{r set}
 #| include: false
 library(tidyverse)
+library(sf)
+library(terra)
 ```
 
 # French Guiana {.unnumbered}
 
--   French Guiana limits
--   TMF undisturbed forests (@bourgoin2024)
--   Other limits?
--   Guyafor distribution on it
--   Guyaflux position
--   Subarea for a first test?
+## Administrative
+
+You can download GADM data for French Guiana from <https://gadm.org/download_country.html>.
+
+```{r gadm}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+fg <- st_read("data/raw_data/gadm41_GUF_shp/gadm41_GUF_0.shp",
+              quiet = TRUE)
+ggplot(fg) +
+  geom_sf() +
+  theme_bw()
+```
+
+## Undisturbed forests
+
+Based on TMF [@bourgoin2024]
+
+```{r tmf}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+tmf <- file.path(
+  "data",
+  "raw_data",
+  "JRC_TMF_UndisturbedDegradedForest_v1_1982_2024_SAM_ID49_N10_W60.tif"
+  ) %>%
+  rast() %>% 
+  crop(fg) %>% 
+  mask(fg)
+tmf[tmf > 1] <- NA
+tmf <- as.factor(tmf)
+ggplot() +
+  tidyterra::geom_spatraster(data = tmf) +
+  scale_fill_manual(values = "lightgrey",
+                    na.value = "transparent",
+                    guide = "none") +
+  theme_bw()
+```
+
+## Guyafor & Guyaflux
+
+```{r guyafor}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+guyafor <- read_tsv("data/raw_data/guyafor.tsv") %>% 
+  select(Forest, Plot, Xutm, Yutm) %>% 
+  group_by(Forest, Plot) %>% 
+  summarise_all(mean, na.rm = TRUE) %>% 
+  na.omit() %>% 
+  st_as_sf(coords = c("Xutm", "Yutm"), crs = 32622)
+ggplot(fg) +
+  geom_sf(fill = NA) +
+  tidyterra::geom_spatraster(data = tmf) +
+  scale_fill_manual(values = "lightgrey",
+                    na.value = "transparent",
+                    guide = "none") +
+  geom_sf(data = guyafor, aes(col = Forest)) +
+  theme_bw() +
+  scale_color_discrete("Guyafor")
+```
+
+## Test area
+
+Starting from the biomass map of @fayad2016, we can compute a semi-variogram to help choose the resolution of interest. We can already see \>50% variation above 10-km, but for test purposes we will test with \>65% variation with a 20-km grid.
+
+```{r vgm}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+agb <- rast("data/raw_data/fayad_2016/AGB_16122015.tif") %>% 
+  scale()
+agb_st <- as.data.frame(agb, xy = TRUE) %>% 
+  st_as_sf(coords = c("x", "y"), crs = 32622)
+t <- gstat::variogram(AGB_16122015~1, data = agb_st, cutoff = 50*10^3)
+t %>% 
+  ggplot(aes(dist/1000, gamma, size = np)) +
+  geom_point() +
+  theme_bw() +
+  xlab("Distance [ km ]") +
+  ylab(("Varigroam estimate from scaled biomass")) +
+  scale_size_continuous("# pairs") +
+  geom_vline(xintercept = 20, linetype = "dashed")
+```
+
+We can select a small area with varying biomass based on @fayad2016 map. If we aim for a grid size of 20 km by 20 km, we can limit our test to a 400 simulations, covering an area of 20 x 20 = 400 km or approximatively 0.4°.
+
+```{r area_fg}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+agb <- rast("data/raw_data/fayad_2016/AGB_16122015.tif")
+area <- tibble(lon = c(-52.7, -52.3), lat = c(4.0, 4.4)) %>% 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% 
+  st_bbox() %>% 
+  st_as_sfc()
+ggplot(fg) +
+  geom_sf(fill = NA) +
+  tidyterra::geom_spatraster(data = agb) +
+  scale_fill_viridis_c(na.value = "transparent", guide = "none") +
+  geom_sf(data = guyafor) +
+  geom_sf(data = area, col = "red", fill = NA) +
+  theme_bw()
+```
+
+```{r area}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+ggplot(area) +
+  geom_sf(fill = NA) +
+  tidyterra::geom_spatraster(data = crop(agb, area %>% st_transform(crs = 32622))) +
+  scale_fill_viridis_c(na.value = "transparent", guide = "none") +
+   geom_sf(data = st_intersection(area %>% st_transform(crs = 32622), guyafor)) +
+  theme_bw()
+```

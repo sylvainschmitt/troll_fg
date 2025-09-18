@@ -1,11 +1,51 @@
 ```{r set}
 #| include: false
 library(tidyverse)
+library(sf)
+library(terra)
 ```
 
 # Grid {.unnumbered}
 
--   10 x 10 km grid based on computing time
--   Cell homogeneity
--   Subarea for a first test?
--   <https://main--altpages.netlify.app/regional>
+We aim at using a 10 km by 10 km grid, but will first do a test with a 20 km by 20 km grid. We will first do a test with 400 simulations, covering an area of 20 x 20 = 400 km or approximatively 0.2°. We will use cell centre to define environment and simulate a representative 4-ha simulation. We can first represent the grid and evaluate expected biomass variation from @fayad2016 and soil and climate variation from input data (see in dedicated pages). **The issue is that there is low biomass variation in the area in which to conduct the test. Perhaps we should use two areas.**
+
+```{r grid}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+guyafor <- read_tsv("data/raw_data/guyafor.tsv") %>% 
+  filter(Forest %in% c("Nouragues", "Montagne Tortue")) %>% 
+  select(Forest, Plot, Xutm, Yutm) %>% 
+  group_by(Forest, Plot) %>% 
+  summarise_all(mean, na.rm = TRUE) %>% 
+  na.omit() %>% 
+  st_as_sf(coords = c("Xutm", "Yutm"), crs = 32622)
+area <- tibble(lon = c(-52.7, -52.3), lat = c(4.0, 4.4)) %>% 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% 
+  st_bbox() %>% 
+  st_as_sfc()
+grid <- st_make_grid(area, n = c(20, 20))
+agb <- rast("data/raw_data/fayad_2016/AGB_16122015.tif") %>% 
+  crop(area %>% st_transform(crs = 32622) %>% st_buffer(2*10^3))
+ggplot(grid) +
+  tidyterra::geom_spatraster(data = agb, alpha = .5) +
+  scale_fill_viridis_c(na.value = "transparent", guide = "none") +
+  geom_sf(fill = NA) +
+  geom_sf(data = guyafor) +
+  theme_bw()
+```
+
+The within cell variation in biomass was low with a median around 10 Mg/ha.
+
+```{r delta_agb}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+extract(agb, vect(grid%>% st_transform(crs = 32622)), exact = TRUE) %>% 
+  group_by(ID) %>% 
+  mutate(delta = abs(AGB_16122015 - mean(AGB_16122015))) %>% 
+  ggplot(aes(delta)) +
+  geom_histogram() +
+  theme_bw() +
+  xlab(expression('Cell'~Delta~AGB~"["~Mg~ha~"]"))
+```
