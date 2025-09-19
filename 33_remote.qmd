@@ -1,6 +1,8 @@
 ```{r set}
 #| include: false
 library(tidyverse)
+library(sf)
+library(terra)
 ```
 
 # Remote sensing {.unnumbered}
@@ -8,3 +10,168 @@ library(tidyverse)
 Simulated spatial forest structure will be evaluated against multiple remote sensing product (e.g. Height with GEDI, ELVIS, or @lahssini2024, @wagner2025; GPP with SIF, LAI with MODIS, Biomass with @fayad2016 or @santoro2025; ...).
 
 > Discuss other option and products with Jérôme after the first test.
+
+```{r data}
+#| message: false
+#| warning: false
+area <- tibble(lon = c(-53, -52), lat = c(4.0, 5.0)) %>% 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% 
+  st_bbox() %>% 
+  st_as_sfc()
+grid <- st_make_grid(area, n = c(10, 10))
+guyafor <- read_tsv("data/raw_data/guyafor.tsv") %>% 
+  select(Forest, Plot, Xutm, Yutm) %>% 
+  group_by(Forest, Plot) %>% 
+  summarise_all(mean, na.rm = TRUE) %>% 
+  na.omit() %>% 
+  st_as_sf(coords = c("Xutm", "Yutm"), crs = 32622) %>% 
+  st_intersection(area %>% st_transform(crs = 32622))
+```
+
+## Height
+
+The first test was done with @wagner2025.
+
+> Extracting at 0.0001 degree (11 m, very long) to get a canopy height distribution per cell.
+
+```{r height}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+# height <- read_tsv("data/raw_data/wagner/canopy_height.tsv") %>% 
+#   select(lon, lat, canopy_height) %>% 
+#   rast(crs = "EPSG:4326") %>% 
+#   project(rast(vect(grid)), method = "average")
+# ggplot(grid) +
+#   tidyterra::geom_spatraster(data = height, alpha = .5) +
+#   scale_fill_viridis_c(expression(Canopy~height~"["~m~"]"),
+#                        na.value = "transparent") +
+#   geom_sf(fill = NA) +
+#   geom_sf(data = guyafor) +
+#   theme_bw() +
+#   theme(legend.position = "bottom")
+```
+
+## GPP
+
+The first test was done with TROPOMI SIF and the equation from @chen2022.
+
+> Test with 2000 only, more years are available (but heavy).
+
+```{r sif}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+sif <- read_tsv("data/raw_data/sif/sif.tsv")  %>% 
+  group_by(x, y) %>% 
+  summarise(gpp = median(gpp, na.rm = TRUE)) %>% 
+  rast()
+ggplot(grid) +
+  geom_sf(fill = NA) +
+  tidyterra::geom_spatraster(data = sif) +
+  scale_fill_viridis_c(expression(GPP[SIF]~"["~kg[C]~m^{-2}~yr^{-1}~"]"),
+                       na.value = "transparent") +
+  geom_sf(data = guyafor) +
+  geom_sf(fill = NA) +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+```{r sif_var}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+read_tsv("data/raw_data/sif/sif.tsv") %>% 
+  group_by(date = floor_date(date, "day"), x, y) %>% 
+  summarise(gpp = median(gpp)) %>% 
+  group_by(date) %>% 
+  summarise(q5 = quantile(gpp, .05, na.rm = TRUE),
+            q25 = quantile(gpp, .25, na.rm = TRUE),
+            q50 = median(gpp, na.rm = TRUE),
+            q75 = quantile(gpp, .75, na.rm = TRUE),
+            q95 = quantile(gpp, .95, na.rm = TRUE)) %>% 
+  ggplot(aes(date, q50)) +
+  geom_ribbon(aes(ymin = q5 , ymax = q95), alpha=0.2) + 
+  geom_ribbon(aes(ymin = q50 , ymax = q75), alpha=0.2) + 
+  geom_line() +
+  theme_bw() +
+  xlab("") +
+  ylab(expression(GPP[SIF]~"["~kg[C]~m^{-2}~yr^{-1}~"]"))
+```
+
+## LAI
+
+LAI from MODIS is bad as shown in @schmitt2024, we still did a quick test.
+
+```{r lai}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+lai <- read_tsv("data/raw_data/modis/modis_lai.tsv") %>% 
+  group_by(lon, lat) %>% 
+  summarise(lai = median(Lai, na.rm = TRUE)/10) %>% 
+  rast()
+ggplot(grid) +
+  geom_sf(fill = NA) +
+  tidyterra::geom_spatraster(data = lai) +
+  scale_fill_viridis_c(expression(LAI[MODIS]~"["~m^2~m^{-2}~"]"), na.value = "transparent") +
+  geom_sf(data = guyafor) +
+  geom_sf(fill = NA) +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+```{r lai_var}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+read_tsv("data/raw_data/modis/modis_lai.tsv") %>% 
+  group_by(time = floor_date(time, "month"), lon, lat) %>% 
+  summarise(lai = median(Lai)/10) %>% 
+  group_by(time) %>% 
+  summarise(q5 = quantile(lai, .05, na.rm = TRUE),
+            q25 = quantile(lai, .25, na.rm = TRUE),
+            q50 = median(lai, na.rm = TRUE),
+            q75 = quantile(lai, .75, na.rm = TRUE),
+            q95 = quantile(lai, .95, na.rm = TRUE)) %>% 
+  ggplot(aes(time, q50)) +
+  geom_ribbon(aes(ymin = q5 , ymax = q95), alpha=0.2) + 
+  geom_ribbon(aes(ymin = q50 , ymax = q75), alpha=0.2) + 
+  geom_line() +
+  theme_bw() +
+  xlab("") +
+  ylab(expression(LAI[MODIS]~"["~m^2~m^{-2}~"]"))
+```
+
+## Biomass
+
+The first test was done with @fayad2016 's biomass map.
+
+```{r agb}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+agb <- rast("data/raw_data/fayad_2016/AGB_16122015.tif") %>% 
+  crop(area %>% st_transform(crs = 32622))
+ggplot(grid) +
+  geom_sf(fill = NA) +
+  tidyterra::geom_spatraster(data = agb/2) +
+  scale_fill_viridis_c(expression(ACS~"["~t~ha^{-1}~"]"), na.value = "transparent") +
+  geom_sf(data = guyafor) +
+  geom_sf(fill = NA) +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+```{r agb_dens}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+rast("data/raw_data/fayad_2016/AGB_16122015.tif") %>% 
+  extract(vect(grid)) %>% 
+  rename(cell = ID, agb = AGB_16122015) %>% 
+  ggplot(aes(agb/2, group = cell)) +
+  geom_density(alpha = 0.5) +
+  theme_bw() +
+  xlab(expression(ACS~"["~t~ha^{-1}~"]"))
+```
