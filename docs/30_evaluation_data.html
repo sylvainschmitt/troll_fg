@@ -20,7 +20,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -30,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./31_remote.html" rel="next">
+<link href="./31_guyaflux.html" rel="next">
 <link href="./24_climate.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -174,8 +227,8 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./31_remote.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Remote sensing</span></a>
+  <a href="./31_guyaflux.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guyaflux</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -186,8 +239,8 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./33_guyaflux.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Guyaflux</span></a>
+  <a href="./33_remote.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Remote sensing</span></a>
   </div>
 </li>
       </ul>
@@ -203,8 +256,26 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./41_dummy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Dummy</span></a>
+  <a href="./41_fluxes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fluxes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./42_dynamics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./43_structure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Structure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./44_projection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Projection</span></a>
   </div>
 </li>
       </ul>
@@ -220,7 +291,19 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
+  <a href="./90_meetings.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Meetings</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./91_literature.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Literature</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./99_references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -254,9 +337,43 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>To do.</p>
+<p>We are going to use three types of data for evaluating different simulations outputs:</p>
+<ul>
+<li>Simulated forest fluxes will be evaluated against a single point - Guyaflux <span class="citation" data-cites="bonal2008">(<a href="99_references.html#ref-bonal2008" role="doc-biblioref">BONAL et al. 2008</a>)</span> - as in <span class="citation" data-cites="schmitt2024">Schmitt et al. (<a href="99_references.html#ref-schmitt2024" role="doc-biblioref">2024</a>)</span></li>
+<li>Simulated forest dynamics and composition will be evaluated against several study areas with several censuses from the Guyafor network (<a href="https://paracou.cirad.fr/website/experimental-design/guyafor-network" class="uri">https://paracou.cirad.fr/website/experimental-design/guyafor-network</a>)</li>
+<li>Simulated spatial forest structure will be evaluated against multiple remote sensing product (e.g.&nbsp;Height with GEDI, ELVIS, or <span class="citation" data-cites="lahssini2024">Lahssini et al. (<a href="99_references.html#ref-lahssini2024" role="doc-biblioref">2024</a>)</span>, <span class="citation" data-cites="wagner2025">Wagner et al. (<a href="99_references.html#ref-wagner2025" role="doc-biblioref">2025</a>)</span>; GPP with SIF, LAI with MODIS, Biomass with <span class="citation" data-cites="fayad2016">Fayad et al. (<a href="99_references.html#ref-fayad2016" role="doc-biblioref">2016</a>)</span> or <span class="citation" data-cites="santoro2025">Santoro and Cartus (<a href="99_references.html#ref-santoro2025" role="doc-biblioref">2025</a>)</span>; …)</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"figures/fg_fig.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="figures/fg_fig.png" class="img-fluid" width="480"></p>
+</div>
+</div>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-bonal2008" class="csl-entry" role="listitem">
+BONAL, DAMIEN, ALEXANDRE BOSC, STÉPHANE PONTON, JEAN-YVES GORET, BENOÎT BURBAN, PATRICK GROSS, JEAN-MARC BONNEFOND, et al. 2008. <span>“Impact of Severe Dry Season on Net Ecosystem Exchange in the Neotropical Rainforest of French Guiana.”</span> <em>Global Change Biology</em> 14 (8): 1917–33. <a href="https://doi.org/10.1111/j.1365-2486.2008.01610.x">https://doi.org/10.1111/j.1365-2486.2008.01610.x</a>.
+</div>
+<div id="ref-fayad2016" class="csl-entry" role="listitem">
+Fayad, Ibrahim, Nicolas Baghdadi, Stéphane Guitet, Jean-Stéphane Bailly, Bruno Hérault, Valéry Gond, Mahmoud El Hajj, and Dinh Ho Tong Minh. 2016. <span>“Aboveground Biomass Mapping in French Guiana by Combining Remote Sensing, Forest Inventories and Environmental Data.”</span> <em>International Journal of Applied Earth Observation and Geoinformation</em> 52 (October): 502–14. <a href="https://doi.org/10.1016/j.jag.2016.07.015">https://doi.org/10.1016/j.jag.2016.07.015</a>.
+</div>
+<div id="ref-lahssini2024" class="csl-entry" role="listitem">
+Lahssini, Kamel, Nicolas Baghdadi, Guerric le Maire, Ibrahim Fayad, and Ludovic Villard. 2024. <span>“Canopy Height Mapping in French Guiana Using Multi-Source Satellite Data and Environmental Information in a u-Net Architecture.”</span> <em>Frontiers in Remote Sensing</em> 5 (November). <a href="https://doi.org/10.3389/frsen.2024.1484900">https://doi.org/10.3389/frsen.2024.1484900</a>.
+</div>
+<div id="ref-santoro2025" class="csl-entry" role="listitem">
+Santoro, Maurizio, and Oliver Cartus. 2025. <span>“ESA Biomass Climate Change Initiative (Biomass<span>_</span>cci): Global Datasets of Forest Above-Ground Biomass for the Years 2007, 2010, 2015, 2016, 2017, 2018, 2019, 2020, 2021 and 2022, V6.0.”</span> NERC EDS Centre for Environmental Data Analysis. <a href="https://doi.org/10.5285/95913FFB6467447CA72C4E9D8CF30501">https://doi.org/10.5285/95913FFB6467447CA72C4E9D8CF30501</a>.
+</div>
+<div id="ref-schmitt2024" class="csl-entry" role="listitem">
+Schmitt, Sylvain, Fabian Fischer, James Ball, Nicolas Barbier, Marion Boisseaux, Damien Bonal, Benoit Burban, et al. 2024. <span>“TROLL 4.0: Representing Water and Carbon Fluxes, Leaf Phenology, and Intraspecific Trait Variation in a Mixed-Species Individual-Based Forest Dynamics Model <span></span> Part 2: Model Evaluation for Two Amazonian Sites.”</span> <a href="http://dx.doi.org/10.5194/egusphere-2024-3106">http://dx.doi.org/10.5194/egusphere-2024-3106</a>.
+</div>
+<div id="ref-wagner2025" class="csl-entry" role="listitem">
+Wagner, Fabien H, Ricardo Dalagnol, Griffin Carter, Mayumi CM Hirye, Shivraj Gill, Le Bienfaiteur Sagang Takougoum, Samuel Favrichon, et al. 2025. <span>“High Resolution Tree Height Mapping of the Amazon Forest Using Planet NICFI Images and LiDAR-Informed u-Net Model.”</span> <a href="https://doi.org/10.48550/ARXIV.2501.10600">https://doi.org/10.48550/ARXIV.2501.10600</a>.
+</div>
+</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -499,8 +616,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./31_remote.html" class="pagination-link">
-        <span class="nav-page-text">Remote sensing</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./31_guyaflux.html" class="pagination-link">
+        <span class="nav-page-text">Guyaflux</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -9,8 +9,8 @@ correspondence_file <- snakemake@input[[2]]
 species_file <- snakemake@input[[3]]
 soil_file <- snakemake@input[[4]]
 folderout <- snakemake@output[[1]]
-x <- as.numeric(snakemake@params$x)
-y <- as.numeric(snakemake@params$y)
+x_pos <- as.numeric(snakemake@params$x)
+y_pos <- as.numeric(snakemake@params$y)
 cra <- as.numeric(snakemake@params$cra)
 crb <- as.numeric(snakemake@params$crb)
 m <- as.numeric(snakemake@params$m)
@@ -20,20 +20,20 @@ delta <- as.numeric(snakemake@params$delta)
 test <- snakemake@params$test
 
 # test
-climate_file <- "simulations/data/era.tsv"
-correspondence_file <- "simulations/data/correspondence_era"
-species_file <- "simulations/data/species.tsv"
-soil_file <- "simulations/data/soil.tsv"
-folderout <- "results/spinup/sim_-52.95_4.05_R1"
-x_pos <- -52.95
-y_pos <- 4.05
-cra <- 1.80
-crb <- 0.3860
-m <- 0.035
-a0 <- 0.2
-b0 <- 0.015
-delta <- 0.1
-test <- TRUE
+# climate_file <- "simulations/data/era.tsv"
+# correspondence_file <- "simulations/data/correspondence_era.tsv"
+# species_file <- "simulations/data/species.tsv"
+# soil_file <- "simulations/data/soil.tsv"
+# folderout <- "results/spinup/sim_-52.95_4.05_R1"
+# x_pos <- -52.95
+# y_pos <- 4.05
+# cra <- 1.80
+# crb <- 0.3860
+# m <- 0.035
+# a0 <- 0.2
+# b0 <- 0.015
+# delta <- 0.1
+# test <- TRUE
 
 # libraries
 library(tidyverse)
@@ -47,20 +47,49 @@ coords_era <- read_tsv(correspondence_file) %>%
 
 climate_raw <- read_tsv(climate_file) %>% 
   filter(near(lon, coords_era$lon)) %>% 
-  filter(near(lat, coords_era$lat))
-
-climate <- climate_raw %>%
+  filter(near(lat, coords_era$lat)) %>% 
   filter(year(time) %in% 1980:2024) %>% 
-  arrange(date) %>%
-  filter(paste0(month(date), "-", day(date)) != "2-29") %>%
+  arrange(time) %>% 
+  select(-lon, -lat)
+
+climate_ds <- tibble(time = seq(min(climate_raw$time),
+                                max(climate_raw$time),
+                                by = 60 * 60 * 0.5)) %>%
+  left_join(climate_raw) %>%
+  group_by(day = as_date(time)) %>%
+  mutate(across(
+    c(tas, vpd, ws),
+    ~ zoo::na.spline(., time, na.rm = FALSE)
+  )) %>%
+  mutate(across(
+    c(snet),
+    ~ zoo::na.approx(., time, na.rm = FALSE)
+  )) %>%
+  ungroup() %>%
+  select(-day) %>%
+  mutate(across(c(snet), ~ ifelse(is.na(.), 0, .))) %>%
+  mutate(across(c(snet), ~ ifelse(. < 0, 0, .))) %>% 
+  filter(paste0(month(time), "-", day(time)) != "2-29") %>% 
   mutate(snet = ifelse(snet <= 1.1, 1.1, snet)) %>%
   mutate(vpd = ifelse(vpd <= 0.011, 0.011, vpd)) %>%
   mutate(ws = ifelse(ws <= 0.11, 0.11, ws))
 
-# we need to interpolate half hourly values from ERA5-Land
-# we need to generate 556 extra years from 4142 to 1979
- 
-clim <-   climate %>%
+sampled_years <- c(sample(1980:2024, 555, replace = TRUE),
+                   1980:2024)
+
+year_df <- tibble(orig_year = sampled_years) %>% 
+  mutate(sim_year = (max(sampled_years)-600+1):max(sampled_years))
+
+spinup <- year_df %>% 
+  left_join(mutate(climate_ds, orig_year = year(time)),
+            relationship = "many-to-many",
+            by = join_by(orig_year)) %>% 
+  mutate(months_diff = (sim_year - orig_year)*12) %>% 
+  mutate(time = time %m+% months(months_diff)) %>% 
+  select(-months_diff)
+
+clim <- spinup %>%
+  rename(date = time) %>% 
   mutate(time = hour(date)) %>%
   mutate(date = date(date)) %>%
   select(date, time, tas, pr) %>%
@@ -73,13 +102,13 @@ clim <-   climate %>%
   ) %>%
   select(-date)
 
-ndays <- length(unique(date(climate$date)))
-day <- climate %>%
+ndays <- length(unique(date(spinup$time)))
+day <- spinup %>%
   rename(Temp = tas, Snet = snet, VPD = vpd, WS = ws) %>%
-  mutate(time_hour = hour(date)) %>%
+  mutate(time_hour = hour(time)) %>%
   filter(time_hour >= 6, time_hour < 18) %>%
   select(-time_hour) %>%
-  mutate(time_numeric = hour(date) + minute(date) / 60) %>%
+  mutate(time_numeric = hour(time) + minute(time) / 60) %>%
   mutate(DayJulian = rep(1:ndays, each = 24)) %>%
   select(DayJulian, time_numeric, Temp, Snet, VPD, WS)
 

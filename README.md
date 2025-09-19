@@ -1,6 +1,6 @@
 # TROLL FG
 Sylvain Schmitt
-Sep 17, 2025
+Sep 19, 2025
 
 <div>
 
@@ -16,6 +16,8 @@ of forest structure derived from remote sensing, as well as point-wise
 forest inventories for forest dynamics and diversity, and single-point
 fluxes from an eddy tower. Further work could then explore the effect of
 future climates on the carbon balance.
+
+![](figures/fg_fig.png)
 
 ## Usage
 

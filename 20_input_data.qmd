@@ -5,11 +5,11 @@ For the test we will use:
 -   TROLL 4.0
 -   Global parameters from @schmitt2024
 -   Species for Paracou from @schmitt2024
--   METRADICA soil maps
+-   METRADICA soil maps (I. Maréchaux pers. com.)
 -   Climate data from ERA5-Land reanalysis [@muñoz-sabater2021]
 
 The limits are:
 
--   The absence of soil depth variation and water table depth representation
--   The reduced species pool and functional space
--   The absence of calibration and tuning for mortality and crown radius allometry, which drive canopy packing, as well as the leaf-shedding parameters, which are important for TROLL4.0 dynamics
+-   The absence of soil depth variation (see METRADICA) and water table depth representation (see Bianca Ruis' postdoc)
+-   The reduced species pool and functional space (see Guillaume Salzet's PhD)
+-   The absence of calibration and tuning for mortality and crown radius allometry, which drive canopy packing, as well as the leaf-shedding parameters, which are important for TROLL4.0 dynamics (see @schmitt2024)

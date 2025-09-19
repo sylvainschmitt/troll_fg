@@ -20,14 +20,19 @@ book:
         - 24_climate.qmd
     - part: 30_evaluation_data.qmd
       chapters: 
-        - 31_remote.qmd
+        - 31_guyaflux.qmd
         - 32_guyafor.qmd
-        - 33_guyaflux.qmd
+        - 33_remote.qmd
     - part: 40_experiments.qmd
       chapters: 
-        - 41_dummy.qmd
+        - 41_fluxes.qmd
+        - 42_dynamics.qmd
+        - 43_structure.qmd
+        - 44_projection.qmd
   appendices:
-    - references.qmd
+    - 90_meetings.qmd
+    - 91_literature.qmd
+    - 99_references.qmd
 
 bibliography: references.bib
 

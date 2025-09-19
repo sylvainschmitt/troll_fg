@@ -5,7 +5,7 @@ library(tidyverse)
 
 # Global {.unnumbered}
 
-For a first test, global parameters we used back parameters calibrated for Paracou from @schmitt2024. A limit is the absence of calibration and tuning for mortality and crown radius allometry, which drive canopy packing, as well as the leaf-shedding parameters, which are important for TROLL4.0 dynamics.
+For a first test, we used back global parameters calibrated for Paracou from @schmitt2024. A limit is the absence of calibration and tuning for mortality and crown radius allometry, which drive canopy packing, as well as the leaf-shedding parameters, which are important for TROLL4.0 dynamics. Moreover, as we will use texture only soil information from METRADICA, we used pedotransfer functions from Brooks & Corey instead of Van Genuchten Mualem.
 
 ```{r pars}
 rcontroll::generate_parameters(

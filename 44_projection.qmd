@@ -1,0 +1,8 @@
+```{r set}
+#| include: false
+library(tidyverse)
+```
+
+# Projection {.unnumbered}
+
+This is where the study area carbon balance will be projected with a first simple test with gross primary productivity (GPP) and biomass dynamics ($\Delta AGB$).

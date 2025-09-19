@@ -1,3 +1,11 @@
 # Evaluation data {.unnumbered}
 
-To do.
+We are going to use three types of data for evaluating different simulations outputs:
+
+-   Simulated forest fluxes will be evaluated against a single point - Guyaflux [@bonal2008] - as in @schmitt2024
+-   Simulated forest dynamics and composition will be evaluated against several study areas with several censuses from the Guyafor network (<https://paracou.cirad.fr/website/experimental-design/guyafor-network>)
+-   Simulated spatial forest structure will be evaluated against multiple remote sensing product (e.g. Height with GEDI, ELVIS, or @lahssini2024, @wagner2025; GPP with SIF, LAI with MODIS, Biomass with @fayad2016 or @santoro2025; ...)
+
+```{r scheme}
+knitr::include_graphics("figures/fg_fig.png")
+```

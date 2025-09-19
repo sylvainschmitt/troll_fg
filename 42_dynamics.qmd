@@ -1,0 +1,8 @@
+```{r set}
+#| include: false
+library(tidyverse)
+```
+
+# Dynamics {.unnumbered}
+
+This is where the simulated forest dynamics and composition will be evaluated against several study areas with several censuses from the Guyafor network (<https://paracou.cirad.fr/website/experimental-design/guyafor-network)>.

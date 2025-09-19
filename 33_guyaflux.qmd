@@ -1,8 +1,0 @@
-```{r set}
-#| include: false
-library(tidyverse)
-```
-
-# Guyaflux {.unnumbered}
-
-To evaluate with a single point fluxes (maybe @schmitt2024 is enough).

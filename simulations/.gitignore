@@ -8,4 +8,5 @@
 !snakefile
 !scripts/
 !envs/
+!data/
 

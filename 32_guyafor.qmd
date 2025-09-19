@@ -5,4 +5,6 @@ library(tidyverse)
 
 # Guyafor {.unnumbered}
 
-To evaluate punctually forest structure and dynamics (eventually diversity).
+Simulated forest dynamics and composition will be evaluated against several study areas with several censuses from the Guyafor network (<https://paracou.cirad.fr/website/experimental-design/guyafor-network>).
+
+> Ask Géraldine for aggregated data instead of redoing it with raw inventories.

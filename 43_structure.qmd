@@ -1,0 +1,8 @@
+```{r set}
+#| include: false
+library(tidyverse)
+```
+
+# Structure {.unnumbered}
+
+This is where the simulated spatial forest structure will be evaluated against multiple remote sensing product (e.g. Height with GEDI, ELVIS, or @lahssini2024, @wagner2025; GPP with SIF, LAI with MODIS, Biomass with @fayad2016 or @santoro2025; ...).

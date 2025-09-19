@@ -2,6 +2,10 @@
 
 The general idea is to test TROLL 4.0's ability to simulate the regional pattern of carbon balance (first test with gross primary production (GPP)) in French Guiana [@maréchaux2024; @schmitt2024]. We will evaluate the spatial projections produced against regional patterns of forest structure derived from remote sensing, as well as point-wise forest inventories for forest dynamics and diversity, and single-point fluxes from an eddy tower. Further work could then explore the effect of future climates on the carbon balance.
 
+```{r scheme}
+knitr::include_graphics("figures/fg_fig.png")
+```
+
 ## Poeple
 
 -   Sylvain Schmitt (sylvain.schmitt\@cirad.fr)

@@ -6,7 +6,7 @@ library(ggfortify)
 
 # Species {.unnumbered}
 
-For a first test, species parameters taken from @schmitt2024. A limit is the reduced species pool and functional space available compared to the whole French Guiana. This could be overcome using more information from @vleminckx2021 or Gentry inventories, as well as exploring back the approaches of Guillaume Salzet's PhD (pers. com.).
+For a first test, species parameters are taken from @schmitt2024. A limit is the reduced species pool and functional space available compared to the whole French Guiana. This could be overcome using more information from @vleminckx2021 or Gentry inventories, as well as exploring back the approaches of Guillaume Salzet's PhD (pers. com.).
 
 ```{r species}
 #| message: false

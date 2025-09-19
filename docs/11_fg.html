@@ -227,8 +227,8 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./31_remote.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Remote sensing</span></a>
+  <a href="./31_guyaflux.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guyaflux</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -239,8 +239,8 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./33_guyaflux.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Guyaflux</span></a>
+  <a href="./33_remote.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Remote sensing</span></a>
   </div>
 </li>
       </ul>
@@ -256,8 +256,26 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./41_dummy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Dummy</span></a>
+  <a href="./41_fluxes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fluxes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./42_dynamics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./43_structure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Structure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./44_projection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Projection</span></a>
   </div>
 </li>
       </ul>
@@ -273,7 +291,19 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
+  <a href="./90_meetings.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Meetings</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./91_literature.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Literature</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./99_references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -316,7 +346,7 @@ div.csl-indent {
 
 </header>
 
-<p>Based on the JRC’s Tropical Moist Forest product <span class="citation" data-cites="bourgoin2024">(<a href="references.html#ref-bourgoin2024" role="doc-biblioref">Bourgoin et al. 2024</a>)</span>, we decided to work at the scale of French Guiana, focusing on undisturbed forests. We used Fayad’s biomass map to investigate the required resolution for modelling biomass spatially. We decided to use a 10 km grid, first testing on a total area of 0.1°, corresponding to 100 simulations.</p>
+<p>Based on the JRC’s Tropical Moist Forest product <span class="citation" data-cites="bourgoin2024">(<a href="99_references.html#ref-bourgoin2024" role="doc-biblioref">Bourgoin et al. 2024</a>)</span>, we decided to work at the scale of French Guiana, focusing on undisturbed forests. We used Fayad’s biomass map to investigate the required resolution for modelling biomass spatially. We decided to use a 10 km grid, first testing on a total area of 0.1°, corresponding to 100 simulations.</p>
 <section id="administrative" class="level2">
 <h2 class="anchored" data-anchor-id="administrative">Administrative</h2>
 <div class="cell">
@@ -403,7 +433,7 @@ div.csl-indent {
 </section>
 <section id="test-area" class="level2">
 <h2 class="anchored" data-anchor-id="test-area">Test area</h2>
-<p>Starting from the biomass map of <span class="citation" data-cites="fayad2016">Fayad et al. (<a href="references.html#ref-fayad2016" role="doc-biblioref">2016</a>)</span>, we can compute a semi-variogram to help choose the resolution of interest. We can already see &gt;50% variation above 10-km.</p>
+<p>Starting from the biomass map of <span class="citation" data-cites="fayad2016">Fayad et al. (<a href="99_references.html#ref-fayad2016" role="doc-biblioref">2016</a>)</span>, we can compute a semi-variogram to help choose the resolution of interest. We can already see &gt;50% variation above 10-km.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -419,7 +449,7 @@ div.csl-indent {
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Distance [ km ]"</span>) <span class="sc">+</span></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>((<span class="st">"Varigroam estimate from scaled biomass"</span>)) <span class="sc">+</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="st">"# pairs"</span>) <span class="sc">+</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">20</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">10</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -430,7 +460,7 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>We can select a small area with varying biomass based on <span class="citation" data-cites="fayad2016">Fayad et al. (<a href="references.html#ref-fayad2016" role="doc-biblioref">2016</a>)</span> map. If we aim for a grid size of 10 km by 10 km, we can limit our test to a 100 simulations, covering an area of 10 x 10 = 100 km or approximatively 1°.</p>
+<p>We can select a small area with varying biomass based on <span class="citation" data-cites="fayad2016">Fayad et al. (<a href="99_references.html#ref-fayad2016" role="doc-biblioref">2016</a>)</span> map. If we aim for a grid size of 10 km by 10 km, we can limit our test to a 100 simulations, covering an area of 10 x 10 = 100 km or approximatively 1°.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>

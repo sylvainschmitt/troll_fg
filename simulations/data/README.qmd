@@ -1,0 +1,21 @@
+---
+title: "Simulations data"
+date: today
+date-format: medium
+format: 
+  gfm:
+    toc: true
+    toc-depth: 2
+---
+
+This folder contains the data needed to run the virtual experiment with a snakemake workflow. They are produced in the analyses (specifically in the input data chapter). In particular they include:
+
+-   `correspondence_era.tsv`: the correspondence table between the grid of our simulations and the grid of ERA5-Land
+-   `era.tsv`: ERA5-Land data
+-   `grid_era.tsv`: the grid of our simulations after removing cells without information in ERA5-Land
+-   `soil.tsv`: soil data from METRADICA prepared for TROLL 4.0
+-   `species.tsv`: species data prepared for TROLL 4.0
+
+```{r, comment=""}
+fs::dir_tree()
+```

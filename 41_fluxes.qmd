@@ -1,0 +1,8 @@
+```{r set}
+#| include: false
+library(tidyverse)
+```
+
+# Fluxes {.unnumbered}
+
+This is where the simulated forest fluxes will be evaluated against a single point - Guyaflux [@bonal2008] - as in @schmitt2024.
