@@ -1,8 +1,86 @@
 ```{r set}
 #| include: false
 library(tidyverse)
+cols <- c("obs" = "#3f3f3f", "sim" = "#0da1f8")
 ```
 
 # Dynamics {.unnumbered}
 
-This is where the simulated forest dynamics and composition will be evaluated against several study areas with several censuses from the Guyafor network (<https://paracou.cirad.fr/website/experimental-design/guyafor-network)>.
+The simulated forest dynamics and composition was evaluated against several study areas with several censuses from the Guyafor network (<https://paracou.cirad.fr/website/experimental-design/guyafor-network)>. For a first test we focused on on Aboveground Carbon Stock (ACS) dynamics per plot per forest in time and its resulting variation across years $\Delta ACS$. The Guyafor sites for the study area are Kaw (-52.18, 4.57), Montagne Tortue (-5.41, 4.22), Nouragues (-52.68, 4.07), Risquetout (-52.60, 4.94), Régina St Georges (-5.19, 4.14), Tibourou (-52.28, 4.40), and Trésor (-52.28, 4.60).
+
+```{r dynamics}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+dates <- tibble(date = seq(ymd('1425-01-01'),
+                           ymd('2024-12-31'),
+                           by = '1 day')) %>% 
+  filter(paste0(month(date), "-", day(date)) != "2-29")
+guyafor <- tibble(
+  forest = c("Kaw", "Montagne_Tortue", "Nouragues", "Risquetout",
+             "Regina_St_Georges", "Tibourou", "Tresor"),
+  lon = c(-52.18, -52.41, -52.68, -52.60, -52.19, -52.28, -52.28),
+  lat = c(4.57, 4.22, 4.07, 4.94, 4.14, 4.40, 4.60)
+) %>% 
+  mutate(grid = list(read_tsv("data/derived_data/grid_era.tsv"))) %>% 
+  unnest(grid) %>% 
+  group_by(forest) %>% 
+  slice(which.min(sqrt((X-lon)^2 + (Y-lat)^2)))
+sim <- guyafor %>% 
+  mutate(sim = paste0("sim_", X, "_", Y, "_R1")) %>% 
+  select(forest, sim) %>% 
+  mutate(stats = list(
+    file.path("simulations", "results0", "sumstats",
+                 paste0(sim, "_0_sumstats.txt")) %>% 
+      read_tsv() %>% 
+      mutate(date = dates$date) %>% 
+      filter(year(date) %in% 1968:2022) %>% 
+      select(date, agb))) %>% 
+  unnest(stats) %>% 
+  mutate(acs = agb/2/10^3) %>% 
+  select(forest, date, acs) %>% 
+  mutate(type = "simulated", plot = "sim")
+obs <- read_tsv("data/derived_data/guyafor_acs.tsv") %>% 
+  filter(forest %in% sim$forest) %>% 
+  mutate(date = as_date(paste0(censusyear, "-6-15"))) %>% 
+  mutate(type = "observed")
+bind_rows(sim, obs) %>% 
+  ggplot(aes(date, acs, 
+             group = paste(plot, type), col = type)) +
+  geom_ribbon(aes(ymin = acs_q5 , ymax = acs_q95), alpha=0.2, col = NA) + 
+  geom_line() +
+  theme_bw() +
+  scale_y_log10() +
+  facet_wrap(~ forest, scales = "free_y") +
+  xlab("") +
+  ylab(expression("Aboveground Carbon Stock ["~t~ha^{-1}~"]")) +
+  theme(legend.position = c(0.8,0.2)) +
+  scale_color_manual("", values = as.vector(cols[c("obs", "sim")])) +
+  scale_fill_manual("", values = as.vector(cols[c("obs", "sim")]))
+```
+
+```{r delta_acs}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+sim <- sim %>% 
+  group_by(forest, plot, type, year = year(date)) %>% 
+  summarise(acs = mean(acs)) %>% 
+  arrange(year) %>% 
+  mutate(delta_acs = (acs -  lag(acs))/(year -  lag(year))) %>% 
+  na.omit()
+obs <- read_tsv("data/derived_data/guyafor_delta_acs.tsv") %>% 
+  filter(forest %in% sim$forest) %>% 
+  rename(year = censusyear) %>% 
+  select(forest, plot, year, delta_acs) %>% 
+  mutate(type = "observed")
+bind_rows(sim, obs) %>% 
+  ggplot(aes(delta_acs, forest, fill = type)) +
+  geom_boxplot(alpha = .5) +
+  theme_bw() +
+  ylab("") +
+  xlab(expression(Delta[ACS]~"["~t~ha^{-1}~yr^{-1}~"]")) +
+  xlim(-5, NA) +
+  theme(legend.position = "bottom") +
+  scale_fill_manual("", values = as.vector(cols[c("obs", "sim")]))
+```

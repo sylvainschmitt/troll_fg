@@ -30,7 +30,7 @@ guyafor <- read_tsv("data/raw_data/guyafor.tsv") %>%
 
 ## Height
 
-The first test was done with @wagner2025.
+The first test was done with @wagner2025. But @wagner2025 is relying on GEDI so maybe the raw GEDI information is better for our evaluation here.
 
 > Extracting at 0.0001 degree (11 m, very long) to get a canopy height distribution per cell.
 
