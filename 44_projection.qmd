@@ -1,8 +1,73 @@
 ```{r set}
 #| include: false
 library(tidyverse)
+library(terra)
 ```
 
 # Projection {.unnumbered}
 
-This is where the study area carbon balance will be projected with a first simple test with gross primary productivity (GPP) and biomass dynamics ($\Delta AGB$).
+This is where the carbon balance of the study area was projected using a simple initial test involving gross primary productivity (GPP) and biomass dynamics ($\Delta AGB$). However, this is just an example, as the evaluation of dynamics by Guyaflor and the identification of spatial patterns using remote sensing products is not yet satisfactory.
+
+```{r prepdata}
+#| eval: false
+dates <- tibble(date = seq(ymd('1425-01-01'),
+                           ymd('2024-12-31'),
+                           by = '1 day')) %>% 
+  filter(paste0(month(date), "-", day(date)) != "2-29") %>% 
+  mutate(iter = 1:n()) %>% 
+  filter(year(date) %in% 1980:2024)
+proj <- tibble(file = list.files("simulations/results0/sumstats/")) %>% 
+  separate(file, c("sim", "lon", "lat", "rep", "0", "type"),
+           "_", remove = FALSE, convert = TRUE) %>% 
+  select(lon, lat, rep, file) %>% 
+  group_by(file) %>% 
+  mutate(stat = list(
+    file.path("simulations", "results0", "sumstats", file) %>% 
+    read_tsv() %>% 
+      filter(iter %in% dates$iter) %>% 
+      select(iter, gpp, agb))
+  ) %>% 
+  unnest(stat) %>% 
+  mutate(gpp = gpp*10^2*365/10^3, agb = agb/10^3) %>% 
+  left_join(dates) %>% 
+  group_by(lon, lat, year = year(date)) %>% 
+  summarise(gpp = mean(gpp), agb = mean(agb))
+write_tsv(proj, "outputs/projection.tsv")
+```
+
+## GPP
+
+```{r gpp}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+gpp <- read_tsv("outputs/projection.tsv") %>% 
+  group_by(lon, lat) %>% 
+  summarise(gpp = mean(gpp)) %>% 
+  rast()
+ggplot() +
+  tidyterra::geom_spatraster(data = gpp) +
+  scale_fill_viridis_c(expression(GPP~"["~kg[C]~m^{-2}~yr^{-1}~"]"),
+                       na.value = "transparent") +
+  theme_bw() 
+```
+
+## $\Delta ACS$
+
+```{r acs}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+acs <- read_tsv("outputs/projection.tsv") %>% 
+  group_by(lon, lat) %>% 
+  arrange(year) %>% 
+  summarise(delta_acs = mean(agb/2-lag(agb/2), na.rm = TRUE)) %>% 
+  rast()
+ggplot() +
+  tidyterra::geom_spatraster(data = acs) +
+  scale_fill_viridis_c(expression(Delta[ACS]~"["~t[C]~ha^{-1}~yr^{-1}~"]"),
+                       na.value = "transparent") +
+  theme_bw() 
+```
+
+## Partial conclusion

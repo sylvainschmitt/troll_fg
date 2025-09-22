@@ -6,7 +6,7 @@ cols <- c("obs" = "#3f3f3f", "sim" = "#0da1f8")
 
 # Dynamics {.unnumbered}
 
-The simulated forest dynamics and composition was evaluated against several study areas with several censuses from the Guyafor network (<https://paracou.cirad.fr/website/experimental-design/guyafor-network)>. For a first test we focused on on Aboveground Carbon Stock (ACS) dynamics per plot per forest in time and its resulting variation across years $\Delta ACS$. The Guyafor sites for the study area are Kaw (-52.18, 4.57), Montagne Tortue (-5.41, 4.22), Nouragues (-52.68, 4.07), Risquetout (-52.60, 4.94), Régina St Georges (-5.19, 4.14), Tibourou (-52.28, 4.40), and Trésor (-52.28, 4.60).
+The simulated forest dynamics and composition was evaluated against several study areas with several censuses from the Guyafor network (<https://paracou.cirad.fr/website/experimental-design/guyafor-network)>. For a first test we focused on on Aboveground Carbon Stock (ACS) dynamics per plot per forest in time and its resulting variation across years $\Delta ACS$. The Guyafor sites for the study area are Kaw (-52.18, 4.57), Montagne Tortue (-5.41, 4.22), Nouragues (-52.68, 4.07), Risquetout (-52.60, 4.94), Régina St Georges (-5.19, 4.14), Tibourou (-52.28, 4.40), and Trésor (-52.28, 4.60). The trajectory was only satisfactory for Montagne Tortue, howvere it was close and with a similar sense of variation for Kaw and Tibourou. Simulations were lower for Regina, Tresor and Nouragues and observed a decline of biomass in the final years of the simulation in Nouragues. Simulated variation in carbon stock was only similar to Regina, Tibourou, Montagne Tortue and Nouragues.
 
 ```{r dynamics}
 #| message: false

@@ -1,3 +1,4 @@
+-   troll_fg 0.1.0.9006: test full outputs v1
 -   troll_fg 0.1.0.9005: test results guyafor & guyaflux
 -   troll_fg 0.1.0.9004: test running, all structure defined and written, next prepare eval data
 -   troll_fg 0.1.0.9003: to clim, wkf draft

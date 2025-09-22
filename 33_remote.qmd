@@ -56,7 +56,7 @@ The first test was done with @wagner2025. But @wagner2025 is relying on GEDI so 
 
 The first test was done with TROPOMI SIF and the equation from @chen2022.
 
-> Test with 2000 only, more years are available (but heavy).
+> Test with 2020 only, more years are available (but heavy).
 
 ```{r sif}
 #| message: false

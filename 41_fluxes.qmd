@@ -6,7 +6,7 @@ cols <- c("obs" = "#3f3f3f", "sim" = "#0da1f8")
 
 # Fluxes {.unnumbered}
 
-The simulated forest fluxes were evaluated against a single point - Guyaflux [@bonal2008] - as in @schmitt2024. The evaluation was done in (-52.95, 4.65) which does not corresponds to Guyaflux but is our closest cell grid from the test area.
+The simulated forest fluxes were evaluated against a single point - Guyaflux [@bonal2008] - as in @schmitt2024. The evaluation was done in the cell (-52.95, 4.65) which does not corresponds to Guyaflux but is our closest cell grid from the test area. As expected from the evaluation by @schmitt2024, the simulated evapotranspiration (ET) and gross primary production (GPP) values are close to the observed values. However, this would require analysis in Guyaflux for a more accurate evaluation.
 
 ```{r fluxes}
 #| message: false

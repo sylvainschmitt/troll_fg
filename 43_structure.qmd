@@ -1,8 +1,262 @@
 ```{r set}
 #| include: false
 library(tidyverse)
+library(sf)
+library(terra)
+cols <- c("obs" = "#3f3f3f", "sim" = "#0da1f8")
 ```
 
 # Structure {.unnumbered}
 
-This is where the simulated spatial forest structure will be evaluated against multiple remote sensing product (e.g. Height with GEDI, ELVIS, or @lahssini2024, @wagner2025; GPP with SIF, LAI with MODIS, Biomass with @fayad2016 or @santoro2025; ...).
+The simulated spatial forest structure was evaluated against multiple remote sensing product (e.g. Height with GEDI, ELVIS, or @lahssini2024, @wagner2025; GPP with SIF, LAI with MODIS, Biomass with @fayad2016 or @santoro2025; ...).
+
+All simulations from the south-west (including Nouragues) showed an abnormal drop in biomass and LAI, as well as a decrease in GPP, in the final years of the simulation. This needs to be further explored. As expected from @fayad2016 's map, spatially projected biomass showed low variation apart from in the south east, so a larger or finer simulation should be used. Similar patterns were observed for GPP and LAI, despite the lack of reduced GPP near the coast for TROLL, which was higher, as expected, and the correct increase in LAI near the coast. However, beware that the issue may arise from the unreliable remote sensing products for LAI and GPP; further exploration of canopy height is required. The temporal variation of GPP and LAI was good, despite the underestimation of GPP by @chen2022 and of LAI by MODIS, as shown by @schmitt2024. For now, the spatial evaluation lacks reliable remote sensing products for spatial patterns.
+
+```{r data}
+#| message: false
+#| warning: false
+area <- tibble(lon = c(-53, -52), lat = c(4.0, 5.0)) %>% 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% 
+  st_bbox() %>% 
+  st_as_sfc()
+grid <- st_make_grid(area, n = c(10, 10))
+```
+
+## Biomass
+
+The first test was done with @fayad2016 's biomass map.
+
+```{r prep_agb}
+#| eval: false
+dates <- tibble(date = seq(ymd('1425-01-01'),
+                           ymd('2024-12-31'),
+                           by = '1 day')) %>% 
+  filter(paste0(month(date), "-", day(date)) != "2-29") %>% 
+  mutate(iter = 1:n()) %>% 
+  filter(year(date) == 2016)
+tibble(file = list.files("simulations/results0/sumstats/")) %>% 
+  separate(file, c("sim", "lon", "lat", "rep", "0", "type"),
+           "_", remove = FALSE, convert = TRUE) %>% 
+  select(lon, lat, rep, file) %>% 
+  group_by(file) %>% 
+  mutate(agb = list(
+    file.path("simulations", "results0", "sumstats", file) %>% 
+    read_tsv() %>% 
+      filter(iter %in% dates$iter) %>% 
+      select(iter, agb))
+  ) %>% 
+  unnest(agb) %>% 
+  left_join(dates) %>% 
+  group_by(lon, lat, date = floor_date(date, "month")) %>% 
+  summarise(agb = mean(agb/10^3)) %>% 
+  write_tsv("outputs/simulated_agb.tsv")
+```
+
+```{r agb}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+agb_obs <- rast("data/raw_data/fayad_2016/AGB_16122015.tif") %>% 
+  crop(area %>% st_transform(crs = 32622))
+agb_sim <- read_tsv("outputs/simulated_agb.tsv") %>% 
+  group_by(lon, lat) %>% 
+  summarise(agb = median(agb)) %>% 
+  rast()
+basemap <- ggplot(grid) +
+  geom_sf(fill = NA) +
+  scale_fill_viridis_c(expression(ACS~"["~t~ha^{-1}~"]"),
+                       na.value = "transparent", limits = c(0, 500)) +
+  geom_sf(fill = NA) +
+  theme_bw() +
+  theme(legend.position = "bottom")
+g_obs <- basemap +
+  tidyterra::geom_spatraster(data = agb_obs) +
+  ggtitle("Fayad (2016)")
+g_sim <- basemap +
+  tidyterra::geom_spatraster(data = agb_sim) +
+  ggtitle("TROLL test")
+cowplot::plot_grid(g_obs, g_sim)
+```
+
+## GPP
+
+The first test was done with TROPOMI SIF and the equation from @chen2022.
+
+```{r prep_gpp}
+#| eval: false
+dates <- tibble(date = seq(ymd('1425-01-01'),
+                           ymd('2024-12-31'),
+                           by = '1 day')) %>% 
+  filter(paste0(month(date), "-", day(date)) != "2-29") %>% 
+  mutate(iter = 1:n()) %>% 
+  filter(year(date) == 2020)
+t <- tibble(file = list.files("simulations/results0/sumstats/")) %>% 
+  separate(file, c("sim", "lon", "lat", "rep", "0", "type"),
+           "_", remove = FALSE, convert = TRUE) %>% 
+  select(lon, lat, rep, file) %>% 
+  group_by(file) %>% 
+  mutate(gpp = list(
+    file.path("simulations", "results0", "sumstats", file) %>% 
+    read_tsv() %>% 
+      filter(iter %in% dates$iter) %>% 
+      select(iter, gpp))
+  ) %>% 
+  unnest(gpp)
+t %>% 
+  mutate(gpp = gpp*10^2*365/10^3) %>% 
+  left_join(dates) %>% 
+  group_by(lon, lat, date = floor_date(date, "8 days")) %>% 
+  summarise(gpp = mean(gpp)) %>% 
+  write_tsv("outputs/simulated_gpp_2000.tsv")
+```
+
+```{r gpp}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+gpp_obs <- read_tsv("data/raw_data/sif/sif.tsv")  %>% 
+  group_by(x, y) %>% 
+  summarise(gpp = median(gpp, na.rm = TRUE)) %>% 
+  rast()
+gpp_sim <- read_tsv("outputs/simulated_gpp_2000.tsv") %>% 
+  group_by(lon, lat) %>% 
+  summarise(gpp = median(gpp)) %>% 
+  rast()
+basemap <- ggplot(grid) +
+  geom_sf(fill = NA) +
+  scale_fill_viridis_c(expression(GPP~"["~kg[C]~m^{-2}~yr^{-1}~"]"),
+                       na.value = "transparent") +
+  geom_sf(fill = NA) +
+  theme_bw() +
+  theme(legend.position = "bottom")
+g_obs <- basemap +
+  tidyterra::geom_spatraster(data = gpp_obs) +
+  ggtitle("GPP from SID (Chen et al. 2022)")
+g_sim <- basemap +
+  tidyterra::geom_spatraster(data = gpp_sim) +
+  ggtitle("TROLL test")
+cowplot::plot_grid(g_obs, g_sim)
+```
+
+```{r gpp_var}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+obs <- read_tsv("data/raw_data/sif/sif.tsv") %>% 
+  group_by(date = floor_date(date, "day"), x, y) %>% 
+  summarise(gpp = median(gpp)) %>% 
+  group_by(date) %>% 
+  summarise(q5 = quantile(gpp, .05, na.rm = TRUE),
+            q50 = median(gpp, na.rm = TRUE),
+            q95 = quantile(gpp, .95, na.rm = TRUE)) %>% 
+  mutate(type = "observed")
+sim <- read_tsv("outputs/simulated_gpp_2000.tsv") %>% 
+  group_by(date = floor_date(date, "day"), lon, lat) %>% 
+  summarise(gpp = median(gpp)) %>% 
+  group_by(date) %>% 
+  summarise(q5 = quantile(gpp, .05, na.rm = TRUE),
+            q50 = median(gpp, na.rm = TRUE),
+            q95 = quantile(gpp, .95, na.rm = TRUE)) %>% 
+  mutate(type = "simulated")
+bind_rows(obs, sim) %>% 
+  ggplot(aes(date, q50, col = type, fill = type)) +
+  geom_ribbon(aes(ymin = q5 , ymax = q95), alpha=0.2, col = NA) + 
+  geom_line() +
+  theme_bw() +
+  xlab("") +
+  ylab(expression(GPP[SIF]~"["~kg[C]~m^{-2}~yr^{-1}~"]")) +
+  theme(legend.position = "bottom") +
+  scale_color_manual("", values = as.vector(cols[c("obs", "sim")])) +
+  scale_fill_manual("", values = as.vector(cols[c("obs", "sim")]))
+```
+
+## LAI
+
+LAI from MODIS is bad as shown in @schmitt2024, we still did a quick test.
+
+```{r prep_lai}
+#| eval: false
+dates <- tibble(date = seq(ymd('1425-01-01'),
+                           ymd('2024-12-31'),
+                           by = '1 day')) %>% 
+  filter(paste0(month(date), "-", day(date)) != "2-29") %>% 
+  mutate(iter = 1:n()) %>% 
+  filter(year(date) %in% 2003:2024)
+t <- tibble(file = list.files("simulations/results0/LAIdynamics/")) %>% 
+  separate(file, c("sim", "lon", "lat", "rep", "0", "type"),
+           "_", remove = FALSE, convert = TRUE) %>% 
+  select(lon, lat, rep, file) %>% 
+  group_by(file) %>% 
+  mutate(lai = list(
+    file.path("simulations", "results0", "LAIdynamics", file) %>% 
+    read_tsv() %>% 
+      filter(iter %in% dates$iter) %>% 
+      select(iter, LAI))
+  ) %>% 
+  unnest(lai)
+t %>% 
+  left_join(dates) %>% 
+  group_by(lon, lat, date = floor_date(date, "4 days")) %>% 
+  summarise(lai = mean(LAI)) %>% 
+  write_tsv("outputs/simulated_lai.tsv")
+```
+
+```{r lai}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+obs <- read_tsv("data/raw_data/modis/modis_lai.tsv") %>% 
+  group_by(lon, lat) %>% 
+  summarise(lai = median(Lai, na.rm = TRUE)/10) %>% 
+  rast()
+sim <- read_tsv("outputs/simulated_lai.tsv") %>% 
+  group_by(lon, lat) %>% 
+  summarise(lai = median(lai)) %>% 
+  rast()
+basemap <- ggplot(grid) +
+  geom_sf(fill = NA) +
+  scale_fill_viridis_c(expression(LAI~"["~m^2~m^{-2}~"]"),
+                       na.value = "transparent") +
+  geom_sf(fill = NA) +
+  theme_bw() +
+  theme(legend.position = "bottom")
+g_obs <- basemap +
+  tidyterra::geom_spatraster(data = obs) +
+  ggtitle("LAI from MODIS")
+g_sim <- basemap +
+  tidyterra::geom_spatraster(data = sim) +
+  ggtitle("TROLL test")
+cowplot::plot_grid(g_obs, g_sim)
+```
+
+```{r lai_var}
+#| message: false
+#| warning: false
+#| fig-cap: "Caption."
+obs <- read_tsv("data/raw_data/modis/modis_lai.tsv") %>% 
+  group_by(date = floor_date(time, "month"), lon, lat) %>% 
+  summarise(lai = median(Lai)/10) %>%
+  group_by(date) %>% 
+  summarise(q5 = quantile(lai, .05, na.rm = TRUE),
+            q50 = median(lai, na.rm = TRUE),
+            q95 = quantile(lai, .95, na.rm = TRUE)) %>% 
+  mutate(type = "observed")
+sim <- read_tsv("outputs/simulated_lai.tsv") %>% 
+  group_by(date = floor_date(date, "day"), lon, lat) %>% 
+  summarise(lai = median(lai)) %>% 
+  group_by(date) %>% 
+  summarise(q5 = quantile(lai, .05, na.rm = TRUE),
+            q50 = median(lai, na.rm = TRUE),
+            q95 = quantile(lai, .95, na.rm = TRUE)) %>% 
+  mutate(type = "simulated")
+bind_rows(obs, sim) %>% 
+  ggplot(aes(date, q50, col = type, fill = type)) +
+  geom_ribbon(aes(ymin = q5 , ymax = q95), alpha=0.2, col = NA) + 
+  geom_line() +
+  theme_bw() +
+  xlab("") +
+  ylab(expression(LAI[MODIS]~"["~m^2~m^{-2}~"]")) +
+  theme(legend.position = "bottom") +
+  scale_color_manual("", values = as.vector(cols[c("obs", "sim")])) +
+  scale_fill_manual("", values = as.vector(cols[c("obs", "sim")]))
+```
