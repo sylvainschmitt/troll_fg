@@ -138,5 +138,26 @@
     "title": "Projection",
     "section": "Partial conclusion",
     "text": "Partial conclusion"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "TROLL FG",
+    "section": "",
+    "text": "Introduction\nThe general idea is to test TROLL 4.0’s ability to simulate the regional pattern of carbon balance (first test with gross primary production (GPP)) in French Guiana (Maréchaux et al. 2024; Schmitt et al. 2024). We will evaluate the spatial projections produced against regional patterns of forest structure derived from remote sensing, as well as point-wise forest inventories for forest dynamics and diversity, and single-point fluxes from an eddy tower. Further work could then explore the effect of future climates on the carbon balance.\nCode\nknitr::include_graphics(\"figures/fg_fig.png\")"
+  },
+  {
+    "objectID": "index.html#test-summary",
+    "href": "index.html#test-summary",
+    "title": "TROLL FG",
+    "section": "Test summary",
+    "text": "Test summary\nWith the help of LLM.\nThe TROLL FG project uses the TROLL 4.0 individual-based model to test whether a coarse 10×10 km grid of representative 4-ha forest simulations can reproduce regional patterns of gross primary productivity, biomass and forest dynamics across undisturbed forests of French Guiana. Simulations combine a global TROLL parameter set, Paracou species traits, METRADICA soils and ERA5-Land climate and are evaluated against three streams of observations: the Guyaflux eddy-tower flux record, the Guyafor forest inventory network (growth, mortality, ACS) and several remote-sensing products (GEDI/height, SIF/TROPOMI GPP, MODIS LAI, Fayad/ESA biomass). Early results show that modeled daily/monthly GPP and evapotranspiration compare reasonably with the tower time series and that plot-scale ACS trajectories agree with some inventory sites while underpredicting others; spatially, simulated biomass, GPP and LAI generally follow the low variability seen in observation maps but many southwestern cells show an unexpected late decline in biomass/LAI/GPP that requires investigation. Key limitations include a reduced species pool, missing soil-depth and water-table dynamics, and several untuned mortality/allometry parameters, so the authors treat the regional carbon-balance maps as exploratory and emphasize next steps: diagnose the southwest decline, expand and tune species traits, add soil/hydrology processes, and compare more remote-sensing products before claiming a definitive regional carbon budget."
+  },
+  {
+    "objectID": "index.html#poeple",
+    "href": "index.html#poeple",
+    "title": "TROLL FG",
+    "section": "Poeple",
+    "text": "Poeple\n\nSylvain Schmitt (sylvain.schmitt@cirad.fr)\nJérôme Chave (jerome.chave@univ-tlse3.fr)\nIsabelle Maréchaux (isabelle.marechaux@inrae.fr)\n\n\n\n\n\nMaréchaux, Isabelle, Fabian Jörg Fischer, Sylvain Schmitt, and Jérôme Chave. 2024. “TROLL 4.0: Representing Water and Carbon Fluxes, Leaf Phenology and Intraspecific Trait Variation in a Mixed-Species Individual-Based Forest Dynamics Model  Part 1: Model Description.” http://dx.doi.org/10.5194/egusphere-2024-3104.\n\n\nSchmitt, Sylvain, Fabian Fischer, James Ball, Nicolas Barbier, Marion Boisseaux, Damien Bonal, Benoit Burban, et al. 2024. “TROLL 4.0: Representing Water and Carbon Fluxes, Leaf Phenology, and Intraspecific Trait Variation in a Mixed-Species Individual-Based Forest Dynamics Model  Part 2: Model Evaluation for Two Amazonian Sites.” http://dx.doi.org/10.5194/egusphere-2024-3106."
   }
 ]

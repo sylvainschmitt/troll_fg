@@ -69,5 +69,3 @@ ggplot() +
                        na.value = "transparent") +
   theme_bw() 
 ```
-
-## Partial conclusion

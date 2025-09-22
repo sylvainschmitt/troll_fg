@@ -322,6 +322,7 @@ div.csl-indent {
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
   <ul class="collapse">
+  <li><a href="#test-summary" id="toc-test-summary" class="nav-link" data-scroll-target="#test-summary">Test summary</a></li>
   <li><a href="#poeple" id="toc-poeple" class="nav-link" data-scroll-target="#poeple">Poeple</a></li>
   </ul></li>
   </ul>
@@ -361,7 +362,7 @@ div.csl-indent {
 
 <section id="introduction" class="level1 unnumbered">
 <h1 class="unnumbered">Introduction</h1>
-<p>The general idea is to test TROLL 4.0’s ability to simulate the regional pattern of carbon balance (first test with gross primary production (GPP)) in French Guiana <span class="citation" data-cites="maréchaux2024 schmitt2024">(<a href="#ref-maréchaux2024" role="doc-biblioref">Maréchaux et al. 2024</a>; <a href="#ref-schmitt2024" role="doc-biblioref">Schmitt et al. 2024</a>)</span>. We will evaluate the spatial projections produced against regional patterns of forest structure derived from remote sensing, as well as point-wise forest inventories for forest dynamics and diversity, and single-point fluxes from an eddy tower. Further work could then explore the effect of future climates on the carbon balance.</p>
+<p>The general idea is to test TROLL 4.0’s ability to simulate the regional pattern of carbon balance (first test with gross primary production (GPP)) in French Guiana <span class="citation" data-cites="maréchaux2024 schmitt2024">(<a href="99_references.html#ref-maréchaux2024" role="doc-biblioref">Maréchaux et al. 2024</a>; <a href="99_references.html#ref-schmitt2024" role="doc-biblioref">Schmitt et al. 2024</a>)</span>. We will evaluate the spatial projections produced against regional patterns of forest structure derived from remote sensing, as well as point-wise forest inventories for forest dynamics and diversity, and single-point fluxes from an eddy tower. Further work could then explore the effect of future climates on the carbon balance.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -371,6 +372,11 @@ div.csl-indent {
 <p><img src="figures/fg_fig.png" class="img-fluid" width="480"></p>
 </div>
 </div>
+<section id="test-summary" class="level2">
+<h2 class="anchored" data-anchor-id="test-summary">Test summary</h2>
+<p><em>With the help of LLM.</em></p>
+<p>The TROLL FG project uses the TROLL 4.0 individual-based model to test whether a coarse 10×10 km grid of representative 4-ha forest simulations can reproduce regional patterns of gross primary productivity, biomass and forest dynamics across undisturbed forests of French Guiana. Simulations combine a global TROLL parameter set, Paracou species traits, METRADICA soils and ERA5-Land climate and are evaluated against three streams of observations: the Guyaflux eddy-tower flux record, the Guyafor forest inventory network (growth, mortality, ACS) and several remote-sensing products (GEDI/height, SIF/TROPOMI GPP, MODIS LAI, Fayad/ESA biomass). Early results show that modeled daily/monthly GPP and evapotranspiration compare reasonably with the tower time series and that plot-scale ACS trajectories agree with some inventory sites while underpredicting others; spatially, simulated biomass, GPP and LAI generally follow the low variability seen in observation maps but many southwestern cells show an unexpected late decline in biomass/LAI/GPP that requires investigation. Key limitations include a reduced species pool, missing soil-depth and water-table dynamics, and several untuned mortality/allometry parameters, so the authors treat the regional carbon-balance maps as exploratory and emphasize next steps: diagnose the southwest decline, expand and tune species traits, add soil/hydrology processes, and compare more remote-sensing products before claiming a definitive regional carbon budget.</p>
+</section>
 <section id="poeple" class="level2">
 <h2 class="anchored" data-anchor-id="poeple">Poeple</h2>
 <ul>
@@ -380,7 +386,7 @@ div.csl-indent {
 </ul>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-maréchaux2024" class="csl-entry" role="listitem">
 Maréchaux, Isabelle, Fabian Jörg Fischer, Sylvain Schmitt, and Jérôme Chave. 2024. <span>“TROLL 4.0: Representing Water and Carbon Fluxes, Leaf Phenology and Intraspecific Trait Variation in a Mixed-Species Individual-Based Forest Dynamics Model <span></span> Part 1: Model Description.”</span> <a href="http://dx.doi.org/10.5194/egusphere-2024-3104">http://dx.doi.org/10.5194/egusphere-2024-3104</a>.
 </div>

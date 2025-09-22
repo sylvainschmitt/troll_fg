@@ -6,6 +6,12 @@ The general idea is to test TROLL 4.0's ability to simulate the regional pattern
 knitr::include_graphics("figures/fg_fig.png")
 ```
 
+## Test summary
+
+*With the help of LLM.*
+
+The TROLL FG project uses the TROLL 4.0 individual-based model to test whether a coarse 10×10 km grid of representative 4-ha forest simulations can reproduce regional patterns of gross primary productivity, biomass and forest dynamics across undisturbed forests of French Guiana. Simulations combine a global TROLL parameter set, Paracou species traits, METRADICA soils and ERA5-Land climate and are evaluated against three streams of observations: the Guyaflux eddy-tower flux record, the Guyafor forest inventory network (growth, mortality, ACS) and several remote-sensing products (GEDI/height, SIF/TROPOMI GPP, MODIS LAI, Fayad/ESA biomass). Early results show that modeled daily/monthly GPP and evapotranspiration compare reasonably with the tower time series and that plot-scale ACS trajectories agree with some inventory sites while underpredicting others; spatially, simulated biomass, GPP and LAI generally follow the low variability seen in observation maps but many southwestern cells show an unexpected late decline in biomass/LAI/GPP that requires investigation. Key limitations include a reduced species pool, missing soil-depth and water-table dynamics, and several untuned mortality/allometry parameters, so the authors treat the regional carbon-balance maps as exploratory and emphasize next steps: diagnose the southwest decline, expand and tune species traits, add soil/hydrology processes, and compare more remote-sensing products before claiming a definitive regional carbon budget.
+
 ## Poeple
 
 -   Sylvain Schmitt (sylvain.schmitt\@cirad.fr)
